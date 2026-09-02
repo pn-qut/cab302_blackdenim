@@ -41,6 +41,10 @@ public class AuthenticationService implements IAuthenticationService {
         if (userDAO.usernameExists(username)){
             throw new IllegalArgumentException("Username is already taken.");
         }
+        if (username == null || username.length() > 20 ){
+            throw new IllegalArgumentException("Username must 20 characters or less.");
+        }
+
 
         // TODO: throw exceptions e.g. username is null
 
@@ -59,6 +63,19 @@ public class AuthenticationService implements IAuthenticationService {
             throw new IllegalArgumentException("Password must be less than 20 characters.");
         }
         // TODO POSSIBLY integrate special character check
+        boolean HasDigit = false;
+        if (!(Character.isDigit(password.charAt(0)))) {
+            for (int i=0; i < password.length(); i++){
+                if ((Character.isDigit(password.charAt(i)))) {
+                    HasDigit = true;
+                    break;
+                }
+            }
+            if (!HasDigit) {
+                throw new IllegalArgumentException("Password must contain digits.");
+            }
+
+        }
 
 
         char ch;
