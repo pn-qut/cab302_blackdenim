@@ -50,6 +50,8 @@ public class AuthenticationService implements IAuthenticationService {
     private void validatePassword(String password){
         // TODO: throw exceptions that will be displayed to the user saying the password is incorrect format
         // e.g. min password length, must contain capital letter etc.
+
+
     }
 
 }

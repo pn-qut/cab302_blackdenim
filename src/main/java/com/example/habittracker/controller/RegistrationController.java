@@ -44,7 +44,7 @@ public class RegistrationController {
     }
 
     @FXML
-    public void onLoginButtonClicked() {
+    public void onGoToLoginButtonClicked() {
         // TODO: Return to login page
     }
 }
