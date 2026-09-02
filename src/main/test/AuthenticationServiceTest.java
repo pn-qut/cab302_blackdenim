@@ -59,7 +59,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    public void RegisterWithNullOrEmptyPassword() {
+    public void RegisterWithNullOrEmptyPasswordThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
             authenticationService.register( "Tom", null);
         });
@@ -69,7 +69,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    public void RegisterWithNullOrEmptyUsername() {
+    public void RegisterWithNullOrEmptyUsernameThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
             authenticationService.register( null, "Password12");
         });
@@ -79,7 +79,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    public void LoginWithNullOrEmptyPassword() {
+    public void LoginWithNullOrEmptyPasswordThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
             authenticationService.login( "Tom", null);
         });
@@ -89,7 +89,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    public void LoginWithNullOrEmptyUsername() {
+    public void LoginWithNullOrEmptyUsernameThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
             authenticationService.login( null, "Password12");
         });
@@ -97,6 +97,39 @@ public class AuthenticationServiceTest {
             authenticationService.login( "", "Password12");
         });
     }
+
+    @Test
+    public void RegisterWithUsernameTooLongThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.login( "asdfghjklasdfghjklasd", "Password12");
+        });
+    }
+
+    @Test
+    public void RegisterWithPasswordTooLongThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.login( "Tom", "Asdfghjklasdfghjkla12");
+        });
+    }
+
+    @Test
+    public void RegisterWithUsernameContainingSpaceThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.login( "T om", "Password12");
+        });
+    }
+
+    @Test
+    public void RegisterWithPasswordContainingSpaceThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.login( "Tom", "Passw ord12");
+        });
+    }
+
+
+
+
+
 
 
 
