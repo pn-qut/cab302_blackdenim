@@ -48,8 +48,47 @@ public class AuthenticationService implements IAuthenticationService {
 
     // TODO: add comments
     private void validatePassword(String password){
+        if (password == null || password.length() < 8) {
+            throw new IllegalArgumentException("Password must be at least 8 characters long.");
+        }
         // TODO: throw exceptions that will be displayed to the user saying the password is incorrect format
-        // e.g. min password length, must contain capital letter etc.
+        if (password.contains(" ")) {
+            throw new IllegalArgumentException("Password cannot contain spaces.");
+        }
+        if (password.length() > 20) {
+            throw new IllegalArgumentException("Password must be less than 20 characters.");
+        }
+        // TODO POSSIBLY integrate special character check
+
+
+        char ch;
+        boolean hasUppercase = false;
+        ch = password.charAt(0);
+        if (!(Character.isUpperCase(ch))){
+            for (int i=0; i < password.length(); i++){
+                if (Character.isUpperCase(password.charAt(i))){
+                    hasUppercase = true;
+                    break;
+                }
+            }
+            if (!hasUppercase){
+                throw new IllegalArgumentException("Password must contain an uppercase character.");
+            }
+
+        }
+        boolean hasLowercase = false;
+        if (!(Character.isLowerCase(password.charAt(0)))) {
+            for (int i=0; i < password.length(); i++){
+                if (Character.isLowerCase(password.charAt(i))){
+                    hasLowercase = true;
+                    break;
+                }
+            }
+            if (!hasLowercase){
+                throw new IllegalArgumentException("Password must contain a lower case character.");
+            }
+            }
+
     }
 
 }
