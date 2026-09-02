@@ -6,8 +6,10 @@ import java.util.List;
 public class MockUserDAO implements IUserDAO{
     private final List<User> users = new ArrayList<>();
 
-    // Searches the users list for users with a specific username
-    // TODO: fix comments
+    /**
+     * Retrieves a user from the user list, searching by username.
+     * @param username The username of the user to be retrieved.
+     */
     @Override
     public User findByUsername(String username) {
         return users.stream()
@@ -16,14 +18,19 @@ public class MockUserDAO implements IUserDAO{
                 .orElse(null);
     }
 
-    // Checks if a specific username exists in the list
-    // TODO: fix comments
+    /**
+     * Checks if a username exists in the users list.
+     * @param username The username to be searched for in the isers list.
+     */
     @Override
     public boolean usernameExists(String username) {
         return findByUsername(username) != null;
     }
 
-    // TODO: add comments
+    /**
+     * Adds a new user to the users list.
+     * @param user The user to add to the users list.
+     */
     @Override
     public void addUser(User user) {
         users.add(user);

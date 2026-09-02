@@ -14,8 +14,6 @@ public class LoginController {
     private TextField usernameTextField;
     @FXML
     private TextField passwordTextField;
-//    @FXML
-//    private Button signUpButton;
     @FXML
     private Label errorLabel;
 
@@ -40,5 +38,8 @@ public class LoginController {
         }
     }
 
-    // TODO: implement onLoginButtonClicked()
+    @FXML
+    public void onGoToRegistrationButtonClicked() {
+        // TODO: Go to registration page
+    }
 }
