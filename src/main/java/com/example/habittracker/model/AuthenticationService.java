@@ -41,7 +41,7 @@ public class AuthenticationService implements IAuthenticationService {
         if (userDAO.usernameExists(username)){
             throw new IllegalArgumentException("Username is already taken.");
         }
-        if (username == null || username.length() > 20 ){
+        if (username == null ||username == "" || username.length() > 20 ){
             throw new IllegalArgumentException("Username must 20 characters or less.");
         }
 
