@@ -20,7 +20,7 @@ public class MockUserDAO implements IUserDAO{
 
     /**
      * Checks if a username exists in the users list.
-     * @param username The username to be searched for in the isers list.
+     * @param username The username to be searched for in the users list.
      */
     @Override
     public boolean usernameExists(String username) {

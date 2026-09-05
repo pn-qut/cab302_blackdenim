@@ -39,7 +39,6 @@ public class RegistrationController {
         catch (Exception e){
             errorLabel.setText("error");  // TODO: change error message
             // TODO: Display an error message to the user in the UI
-            // TODO: add exception catch for all types of exceptions
         }
     }
 
