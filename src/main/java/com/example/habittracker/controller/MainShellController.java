@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
+import javafx.scene.control.Label;
 
 import java.io.IOException;
 
@@ -13,48 +14,51 @@ public class MainShellController {
     private StackPane contentArea;
 
     @FXML
+    public void initialize() {
+        loadPage("todayhabit.fxml");
+    }
+
+    @FXML
     private void HomeBar() {
         loadPage("todayhabit.fxml");
     }
 
     @FXML
     private void HabitsBar() {
-        // Add later
+        contentArea.getChildren().setAll(new Label("Habits page is coming soon!"));
     }
 
     @FXML
     private void CommunityGoalsBar() {
-        // Add later
+        contentArea.getChildren().setAll(new Label("Community goal page is coming soon!"));
     }
 
     @FXML
     private void LeaderboardBar() {
-        // Add later
+        contentArea.getChildren().setAll(new Label("Leaderboard page is coming soon!"));
     }
 
     @FXML
     private void AchievementsBar() {
-        // Add later
+        contentArea.getChildren().setAll(new Label("Achievement page is coming soon!"));
     }
 
     @FXML
     private void ProfileBar() {
-        // Add later
+        contentArea.getChildren().setAll(new Label("Profile page is coming soon!"));
     }
 
     @FXML
     private void SettingsBar() {
-        // Add later
+        contentArea.getChildren().setAll(new Label("Setting page is coming soon!"));
     }
 
-    private void loadPage(String fxml) {
+    private void loadPage(String path) {
         try {
             Node page = FXMLLoader.load(
-                    getClass().getResource(fxml)
+                    getClass().getResource("/com/example/habittracker/" + path)
             );
-
             contentArea.getChildren().setAll(page);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
