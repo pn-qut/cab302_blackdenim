@@ -1,10 +1,16 @@
 package com.example.habittracker.controller;
 
+import com.example.habittracker.LoginUI;
 import com.example.habittracker.model.AuthenticationService;
 import com.example.habittracker.model.MockUserDAO;
 import com.example.habittracker.model.User;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class LoginController {
 
@@ -18,6 +24,8 @@ public class LoginController {
     private Label errorLabel;
     @FXML
     private Button loginButton;
+    @FXML
+    private Hyperlink registerLink;
 
     public LoginController() {
         this.authenticationService = new AuthenticationService(new MockUserDAO());
@@ -36,12 +44,15 @@ public class LoginController {
             // TODO: functionality for what happens after logging in
         } catch (Exception e){
             errorLabel.setText("Incorrect username or password.");
-            // TODO: Display an error message to the user in the UI
         }
     }
 
     @FXML
-    public void onGoToRegistrationButtonClicked() {
+    public void onGoToRegistrationButtonClicked() throws IOException {
+        Stage stage = (Stage) registerLink.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(LoginUI.class.getResource("registration-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), LoginUI.WIDTH, LoginUI.HEIGHT);
+        stage.setScene(scene);
         // TODO: Go to registration page
     }
 }

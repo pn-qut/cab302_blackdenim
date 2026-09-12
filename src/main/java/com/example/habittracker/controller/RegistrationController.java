@@ -1,9 +1,15 @@
 package com.example.habittracker.controller;
 
+import com.example.habittracker.LoginUI;
 import com.example.habittracker.model.AuthenticationService;
+import com.example.habittracker.model.MockUserDAO;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 
 public class RegistrationController {
@@ -14,12 +20,16 @@ public class RegistrationController {
     private TextField usernameTextField;
     @FXML
     private TextField passwordTextField;
-
+    @FXML
+    private Button registerConfirmButton;
+    @FXML
+    private Hyperlink loginLink;
     @FXML
     private Label errorLabel;
 
-    public RegistrationController(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
+    public RegistrationController() {
+        //this.authenticationService = authenticationService;
+        this.authenticationService = new AuthenticationService(new MockUserDAO());
     }
 
     @FXML
@@ -32,6 +42,7 @@ public class RegistrationController {
             // Registration succeeded
             errorLabel.setText("");
 
+            onGoToLoginButtonClicked(); //should take user back to login screen.
             // TODO: implement functionality after registration. e.g. go to login screen??
         } catch (IllegalArgumentException e) {
             errorLabel.setText(e.getMessage());
@@ -43,7 +54,10 @@ public class RegistrationController {
     }
 
     @FXML
-    public void onGoToLoginButtonClicked() {
-        // TODO: Return to login page
+    public void onGoToLoginButtonClicked() throws IOException {
+        Stage stage = (Stage) loginLink.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(LoginUI.class.getResource("login-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), LoginUI.WIDTH, LoginUI.HEIGHT);
+        stage.setScene(scene);
     }
 }
