@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.habittracker.controller.HabitsController"
+      spacing="20"
+      styleClass="home-page">
+
+    <padding>
+        <Insets top="40" right="50" bottom="40" left="50"/>
+    </padding>
+
+    <Label text="Your habits" styleClass="page-title"/>
+
+    <HBox spacing="20" VBox.vgrow="ALWAYS">
+
+        <VBox spacing="10"
+              style="-fx-background-color: #dcdcdc; -fx-background-radius: 6;"
+              HBox.hgrow="ALWAYS"
+              minWidth="260"
+              prefWidth="360">
+
+            <padding>
+                <Insets top="16" right="16" bottom="16" left="16"/>
+            </padding>
+
+            <HBox alignment="CENTER_LEFT">
+                <Label text="Current habits" style="-fx-font-weight: bold;"/>
+                <HBox HBox.hgrow="ALWAYS"/>
+                <Label fx:id="currentHabitsCountLabel" text="0 habits"/>
+            </HBox>
+
+            <ListView fx:id="currentHabitsList" VBox.vgrow="ALWAYS"/>
+
+        </VBox>
+
+        <VBox spacing="10"
+              style="-fx-background-color: #dcdcdc; -fx-background-radius: 6;"
+              HBox.hgrow="ALWAYS"
+              minWidth="260"
+              prefWidth="360">
+
+            <padding>
+                <Insets top="16" right="16" bottom="16" left="16"/>
+            </padding>
+
+            <Label text="Pre-made habits" style="-fx-font-weight: bold;"/>
+
+            <ScrollPane fitToWidth="true"
+                        style="-fx-background-color: transparent;"
+                        VBox.vgrow="ALWAYS">
+                <GridPane fx:id="premadeHabitsPane"
+                          hgap="12" vgap="12">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50"/>
+                        <ColumnConstraints percentWidth="50"/>
+                    </columnConstraints>
+                </GridPane>
+            </ScrollPane>
+
+        </VBox>
+
+    </HBox>
+
+</VBox>

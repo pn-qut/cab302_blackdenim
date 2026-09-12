@@ -7,6 +7,8 @@ public class TodayHabitController {
     @FXML
     private ListView<String> todayList;
 
+    private Runnable onSeeAllHabitsAction;
+
     @FXML
     public void initialize() {
 
@@ -18,8 +20,14 @@ public class TodayHabitController {
         );
     }
 
+    public void setOnSeeAllHabits(Runnable action) {
+        this.onSeeAllHabitsAction = action;
+    }
+
     @FXML
     private void onSeeAllHabits() {
-
+        if (onSeeAllHabitsAction != null) {
+            onSeeAllHabitsAction.run();
+        }
     }
 }

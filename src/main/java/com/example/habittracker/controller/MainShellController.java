@@ -25,7 +25,7 @@ public class MainShellController {
 
     @FXML
     private void HabitsBar() {
-        contentArea.getChildren().setAll(new Label("Habits page is coming soon!"));
+        loadPage("habits.fxml");
     }
 
     @FXML
@@ -55,9 +55,16 @@ public class MainShellController {
 
     private void loadPage(String path) {
         try {
-            Node page = FXMLLoader.load(
+            FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/com/example/habittracker/" + path)
             );
+            Node page = loader.load();
+
+            Object controller = loader.getController();
+            if (controller instanceof TodayHabitController) {
+                ((TodayHabitController) controller).setOnSeeAllHabits(() -> loadPage("habits.fxml"));
+            }
+
             contentArea.getChildren().setAll(page);
         } catch (IOException e) {
             e.printStackTrace();
