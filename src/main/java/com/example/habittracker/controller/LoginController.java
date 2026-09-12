@@ -1,10 +1,10 @@
 package com.example.habittracker.controller;
 
 import com.example.habittracker.model.AuthenticationService;
+import com.example.habittracker.model.MockUserDAO;
 import com.example.habittracker.model.User;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 public class LoginController {
 
@@ -16,9 +16,11 @@ public class LoginController {
     private TextField passwordTextField;
     @FXML
     private Label errorLabel;
+    @FXML
+    private Button loginButton;
 
-    public LoginController(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
+    public LoginController() {
+        this.authenticationService = new AuthenticationService(new MockUserDAO());
     }
 
     @FXML

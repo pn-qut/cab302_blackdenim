@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="750.0"
+          xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.habittracker.controller.LoginController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="375.0" />
+    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="373.8" minWidth="10.0" prefWidth="373.4" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
+  </rowConstraints>
+   <children>
+      <AnchorPane prefHeight="500.0" prefWidth="375.0" style="-fx-background-color: lightgrey;">
+         <children>
+            <Label layoutX="36.0" layoutY="206.0" text="EcoHabit">
+               <font>
+                  <Font name="Inter Semi Bold" size="35.0" />
+               </font>
+            </Label>
+            <Label layoutX="36.0" layoutY="250.0" text="Habits for Tomorow, Together">
+               <font>
+                  <Font name="Inter Semi Bold" size="20.0" />
+               </font>
+            </Label>
+         </children></AnchorPane>
+      <AnchorPane prefHeight="500.0" prefWidth="375.0" GridPane.columnIndex="1" GridPane.valignment="CENTER">
+         <children>
+            <TextField fx:id="usernameTextField" alignment="CENTER" layoutX="73.0" layoutY="223.0" prefHeight="26.0" prefWidth="228.0" promptText="Username" />
+            <PasswordField fx:id="passwordTextField" alignment="CENTER" layoutX="73.0" layoutY="287.0" prefHeight="26.0" prefWidth="228.0" promptText="Password" />
+            <Button fx:id="loginButton" alignment="CENTER" layoutX="136.0" layoutY="380.0" mnemonicParsing="false" onAction="#onLoginConfirmButtonClicked" prefHeight="26.0" prefWidth="102.0" text="Login" />
+            <HBox alignment="CENTER" layoutX="103.0" layoutY="406.0" prefHeight="36.0" prefWidth="166.0">
+               <children>
+                  <Label text="New here?" textAlignment="CENTER" />
+                  <Hyperlink text="Register" textAlignment="CENTER" />
+               </children>
+            </HBox>
+            <Label layoutX="73.0" layoutY="162.0" text="Welcome Back!">
+               <font>
+                  <Font name="Inter Semi Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="errorLabel" alignment="CENTER" layoutX="101.0" layoutY="346.0" textAlignment="CENTER" />
+         </children>
+      </AnchorPane>
+   </children>
+    
+</GridPane>
