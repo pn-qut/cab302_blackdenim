@@ -20,6 +20,6 @@ public class TodayHabitController {
 
     @FXML
     private void onSeeAllHabits() {
-        
+
     }
 }
