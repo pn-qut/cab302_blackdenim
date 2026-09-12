@@ -1,84 +1,81 @@
 package com.example.habittracker.model;
 
-import com.example.habittracker.database.DatabaseManager;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
- * SQLite implementation of IUserDAO. Reads and writes users in the "users" table.
+ * Saves and loads users from the SQLite database.
  */
 public class SqliteUserDAO implements IUserDAO {
 
-    private final DatabaseManager databaseManager;
+    private Connection connection;
 
-    /**
-     * Creates the DAO and makes sure the database tables exist.
-     * @param databaseManager The manager used to open connections to the database.
-     */
-    public SqliteUserDAO(DatabaseManager databaseManager) {
-        this.databaseManager = databaseManager;
-        this.databaseManager.initializeSchema();
+    public SqliteUserDAO() {
+        connection = SqliteConnection.getInstance();
+        createTable();
     }
 
     /**
-     * Retrieves a user from the database, searching by username.
-     * @param username The username of the user to be retrieved.
-     * @return The matching user, or null if no user has that username.
+     * Makes the users table if it is not there yet.
+     */
+    private void createTable() {
+        String sql = "CREATE TABLE IF NOT EXISTS users ("
+                + "username VARCHAR(50) PRIMARY KEY, "
+                + "password VARCHAR(255) NOT NULL)";
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException("Could not create the users table", e);
+        }
+    }
+
+    /**
+     * Looks up a user by their username.
+     * @param username The username to look for.
+     * @return The user, or null if nobody has that username.
      */
     @Override
     public User findByUsername(String username) {
-        String sql = "SELECT username, password FROM users WHERE username = ?";
-        try (Connection connection = databaseManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        String sql = "SELECT * FROM users WHERE username = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, username);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return new User(resultSet.getString("username"), resultSet.getString("password"));
-                }
-                return null;
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return new User(rs.getString("username"), rs.getString("password"));
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to find user by username: " + username, e);
+            throw new RuntimeException("Could not look up the user: " + username, e);
         }
+        return null;
     }
 
     /**
-     * Checks if a username exists in the database.
-     * @param username The username to be searched for in the database.
-     * @return True if a user with that username already exists.
+     * Checks if a username is already taken.
+     * @param username The username to check.
+     * @return true if someone already has that username.
      */
     @Override
     public boolean usernameExists(String username) {
-        String sql = "SELECT 1 FROM users WHERE username = ? LIMIT 1";
-        try (Connection connection = databaseManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, username);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                return resultSet.next();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to check if username exists: " + username, e);
-        }
+        return findByUsername(username) != null;
     }
 
     /**
-     * Adds a new user to the database.
-     * Usernames are unique, so adding a username that already exists will fail.
-     * @param user The user to add.
+     * Saves a new user to the database.
+     * Usernames have to be unique, so adding one that is already taken will fail.
+     * @param user The user to save.
      */
     @Override
     public void addUser(User user) {
         String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
-        try (Connection connection = databaseManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to add user: " + user.getUsername(), e);
+            throw new RuntimeException("Could not add the user: " + user.getUsername(), e);
         }
     }
 }
