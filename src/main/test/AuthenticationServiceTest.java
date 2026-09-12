@@ -13,38 +13,33 @@ public class AuthenticationServiceTest {
             new User("John43", "password12"),
             new User("Jane", "test14"),
             new User("Jay", "Doe"),
-            new User("Alice", "12345"),
-            new User("Shane", "G352")
+            new User("Alice", "Testpw12"),
+            new User("Tom", "G352")
     };
 
     @BeforeEach
     public void setUp() {
         authenticationService = new AuthenticationService(userDAO);
+        for (User user : users) {
+            userDAO.addUser(user);
+        }
+    }
+
+    @Test
+    public void RegisterAndLoginWithValidUsernameAndPassword(){
+        authenticationService.register("Sam", "Testjh14");
+        User user = authenticationService.login("Sam", "Testjh14");
+
+        assertEquals("Sam", user.getUsername());
+        assertEquals("Testjh14", user.getPassword());
     }
 
     @Test
     public void RegisterWithTakenUsernameThrowsException() {
-        for (User user : users) {
-            userDAO.addUser(user);
-        }
-
         assertThrows(IllegalArgumentException.class, () -> {
             authenticationService.register("Jay", "pwdfbd");
         });
     }
-    @Test
-    public void testUsernameMatch() {
-
-        assertEquals("John43", user.getUsername());
-    }
-
-    @Test
-    public void testPasswordMatch() {
-
-        assertEquals("password12", user.getPassword());
-    }
-
-
 
     @Test
     public void RegisterWithPasswordLessThan8CharsThrowsException() {
@@ -75,17 +70,17 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    public void RegisterWithNullOrEmptyPassword() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "Tom", null);
-        });
+    public void RegisterWithNullOrEmptyPasswordThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
             authenticationService.register( "Tom", "");
+        });
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.register( "Tom", null);
         });
     }
 
     @Test
-    public void RegisterWithNullOrEmptyUsername() {
+    public void RegisterWithNullOrEmptyUsernameThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
             authenticationService.register( null, "Password12");
         });
@@ -95,7 +90,35 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    public void LoginWithNullOrEmptyPassword() {
+    public void RegisterWithUsernameTooLongThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.register( "asdfghjklasdfghjklasd", "Password12");
+        });
+    }
+
+    @Test
+    public void RegisterWithPasswordTooLongThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.register( "Tom", "Asdfghjklasdfghjkla12");
+        });
+    }
+
+    @Test
+    public void RegisterWithUsernameContainingSpaceThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.register( "T om", "Password12");
+        });
+    }
+
+    @Test
+    public void RegisterWithPasswordContainingSpaceThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.register( "Tom", "Passw ord12");
+        });
+    }
+
+    @Test
+    public void LoginWithNullOrEmptyPasswordThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
             authenticationService.login( "Tom", null);
         });
@@ -105,7 +128,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    public void LoginWithNullOrEmptyUsername() {
+    public void LoginWithNullOrEmptyUsernameThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
             authenticationService.login( null, "Password12");
         });
@@ -114,18 +137,19 @@ public class AuthenticationServiceTest {
         });
     }
 
+    @Test
+    public void LoginWithUnregisteredUsernameThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.login( "Borris", "Password12");
+        });
+    }
 
-
-
-
-
-
-
-
-
-    // Password must be at least 8 chars long
-    // Contains at least one number, lowercase letter and uppercase letter
-    // TODO: add all tests
+    @Test
+    public void LoginWithIncorrectPasswordThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.login( "Alice", "Password12");
+        });
+    }
 }
 
 

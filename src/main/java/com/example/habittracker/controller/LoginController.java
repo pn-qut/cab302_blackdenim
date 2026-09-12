@@ -33,7 +33,7 @@ public class LoginController {
 
             // TODO: functionality for what happens after logging in
         } catch (Exception e){
-            errorLabel.setText("error");
+            errorLabel.setText("Incorrect username or password.");
             // TODO: Display an error message to the user in the UI
         }
     }
