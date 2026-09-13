@@ -5,16 +5,16 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Habit {
+public class TrackedHabit {
 
     private final StringProperty name;
     private final BooleanProperty completedToday;
 
-    public Habit(String name) {
+    public TrackedHabit(String name) {
         this(name, false);
     }
 
-    public Habit(String name, boolean completedToday) {
+    public TrackedHabit(String name, boolean completedToday) {
         this.name = new SimpleStringProperty(name);
         this.completedToday = new SimpleBooleanProperty(completedToday);
     }

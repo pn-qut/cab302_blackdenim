@@ -1,6 +1,6 @@
 package com.example.habittracker.controller;
 
-import com.example.habittracker.model.Habit;
+import com.example.habittracker.model.TrackedHabit;
 import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,7 +31,7 @@ public class HabitsController {
     );
 
     @FXML
-    private ListView<Habit> currentHabitsList;
+    private ListView<TrackedHabit> currentHabitsList;
 
     @FXML
     private Label currentHabitsCountLabel;
@@ -41,10 +41,10 @@ public class HabitsController {
 
     private static final int PREMADE_COLUMNS = 2;
 
-    private final ObservableList<Habit> currentHabits = FXCollections.observableArrayList(
-            new Habit("Drink 2L of water"),
-            new Habit("Go for a walk"),
-            new Habit("Read for 20 minutes")
+    private final ObservableList<TrackedHabit> currentHabits = FXCollections.observableArrayList(
+            new TrackedHabit("Drink 2L of water"),
+            new TrackedHabit("Go for a walk"),
+            new TrackedHabit("Read for 20 minutes")
     );
 
     @FXML
@@ -52,7 +52,7 @@ public class HabitsController {
         currentHabitsList.setItems(currentHabits);
         currentHabitsList.setCellFactory(list -> new HabitCell());
 
-        currentHabits.addListener((javafx.collections.ListChangeListener<Habit>) change -> updateHabitsCount());
+        currentHabits.addListener((javafx.collections.ListChangeListener<TrackedHabit>) change -> updateHabitsCount());
         updateHabitsCount();
 
         buildPremadeHabits();
@@ -97,7 +97,7 @@ public class HabitsController {
 
         addButton.setOnAction(e -> {
             if (!isCurrentHabit(habitName)) {
-                currentHabits.add(new Habit(habitName));
+                currentHabits.add(new TrackedHabit(habitName));
             }
             addButton.setDisable(true);
             addButton.setText("Added");
@@ -111,7 +111,7 @@ public class HabitsController {
         return currentHabits.stream().anyMatch(h -> h.getName().equals(habitName));
     }
 
-    private static class HabitCell extends ListCell<Habit> {
+    private static class HabitCell extends ListCell<TrackedHabit> {
         private final CheckBox checkBox = new CheckBox();
         private final Label nameLabel = new Label();
         private final HBox root = new HBox(10, checkBox, nameLabel);
@@ -122,7 +122,7 @@ public class HabitsController {
         }
 
         @Override
-        protected void updateItem(Habit habit, boolean empty) {
+        protected void updateItem(TrackedHabit habit, boolean empty) {
             super.updateItem(habit, empty);
 
             if (boundProperty != null) {
