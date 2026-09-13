@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS habit_logs (
     log_date DATE NOT NULL,
     completed BOOLEAN NOT NULL,
     value INTEGER
+    UNIQUE (user_habit_id, log_date)
 );
 
 CREATE TABLE IF NOT EXISTS reminders (
