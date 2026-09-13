@@ -37,7 +37,7 @@ public class SqliteUserDAO implements IUserDAO{
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                int id = resultSet.getInt("int");
+                int id = resultSet.getInt("user_id");
                 String password = resultSet.getString("password");
                 User user = new User(username, password);
                 user.setId(id);

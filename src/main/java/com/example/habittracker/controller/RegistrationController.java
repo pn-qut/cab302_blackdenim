@@ -2,7 +2,9 @@ package com.example.habittracker.controller;
 
 import com.example.habittracker.LoginUI;
 import com.example.habittracker.model.AuthenticationService;
+import com.example.habittracker.model.IUserDAO;
 import com.example.habittracker.model.MockUserDAO;
+import com.example.habittracker.model.SqliteUserDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,6 +15,8 @@ import java.io.IOException;
 
 
 public class RegistrationController {
+
+    private IUserDAO userDAO;
 
     private AuthenticationService authenticationService;
 
@@ -29,7 +33,8 @@ public class RegistrationController {
 
     public RegistrationController() {
         //this.authenticationService = authenticationService;
-        this.authenticationService = new AuthenticationService(new MockUserDAO());
+        userDAO = new SqliteUserDAO();
+        this.authenticationService = new AuthenticationService(userDAO);
     }
 
     @FXML
