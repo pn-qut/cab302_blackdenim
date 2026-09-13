@@ -1,43 +1,41 @@
 package com.example.habittracker.model;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Habit {
-    private int id;
-    private String name;
-    // TODO LATER: in future sprint add unit of measurement functionality
-    // private String unit
 
-    public Habit(int id, String name) {
-        this.id = id;
-        this.name = name;
+    private final StringProperty name;
+    private final BooleanProperty completedToday;
+
+    public Habit(String name) {
+        this(name, false);
     }
 
-    /**
-     * Gets the habit id number.
-     */
-    public int getId() {
-        return id;
+    public Habit(String name, boolean completedToday) {
+        this.name = new SimpleStringProperty(name);
+        this.completedToday = new SimpleBooleanProperty(completedToday);
     }
 
-    /**
-     * Sets the id number of the habit.
-     * @param id The id to set.
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    /**
-     * Gets the name of the habit.
-     */
     public String getName() {
+        return name.get();
+    }
+
+    public StringProperty nameProperty() {
         return name;
     }
 
-    /**
-     * Sets the name of the habit.
-     * @param name The name to set.
-     */
-    public void setId(String name) {
-        this.name = name;
+    public boolean isCompletedToday() {
+        return completedToday.get();
+    }
+
+    public void setCompletedToday(boolean completedToday) {
+        this.completedToday.set(completedToday);
+    }
+
+    public BooleanProperty completedTodayProperty() {
+        return completedToday;
     }
 }
