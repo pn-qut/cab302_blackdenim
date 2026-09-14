@@ -1,9 +1,7 @@
 package com.example.habittracker.controller;
 
 import com.example.habittracker.LoginUI;
-import com.example.habittracker.model.AuthenticationService;
-import com.example.habittracker.model.MockUserDAO;
-import com.example.habittracker.model.User;
+import com.example.habittracker.model.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,6 +11,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class LoginController {
+
+    private IUserDAO userDAO;
 
     private AuthenticationService authenticationService;
 
@@ -28,7 +28,8 @@ public class LoginController {
     private Hyperlink registerLink;
 
     public LoginController() {
-        this.authenticationService = new AuthenticationService(new MockUserDAO());
+        userDAO = new SqliteUserDAO();
+        this.authenticationService = new AuthenticationService(userDAO);
     }
 
     @FXML
@@ -39,7 +40,7 @@ public class LoginController {
             User user = authenticationService.login(username, password);
 
             // Login succeeded
-            errorLabel.setText("");
+            errorLabel.setText("Login successful");
 
             // TODO: functionality for what happens after logging in
         } catch (Exception e){
