@@ -20,6 +20,43 @@ public class HabitEntry {
         this.completed = completed;
     }
 
+    public int getId() {
+        return id;
+    }
 
-    //TODO: getters and setters
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public int getHabit_id() {
+        return habit_id;
+    }
+
+    public void setHabit_id(int habit_id) {
+        this.habit_id = habit_id;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
 }
