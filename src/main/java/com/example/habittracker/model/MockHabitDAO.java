@@ -5,8 +5,7 @@ import java.util.List;
 
 public class MockHabitDAO implements IHabitDAO{
     private final List<Habit> defaultHabits = new ArrayList<>(List.of(
-            new Habit(1, "Habit 1"),
-            new Habit(2, "Habit 2")
+
     ));
 
     @Override
