@@ -28,7 +28,7 @@ public class LoginController {
     private Hyperlink registerLink;
 
     public LoginController() {
-        userDAO = new SqliteUserDAO();
+        userDAO = new IUserDAO();
         this.authenticationService = new AuthenticationService(userDAO);
     }
 
