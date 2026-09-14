@@ -7,13 +7,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-
-
 public class LoginUI extends Application {
-    // Constants defining the window title and size
-    public static String TITLE = "EcoHabit Tracker";
-    public static int WIDTH = 750;
-    public static int HEIGHT = 500;
+    public static final String TITLE = "EcoHabit Tracker";
+    public static final int WIDTH = 750;
+    public static final int HEIGHT = 500;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -23,5 +20,4 @@ public class LoginUI extends Application {
         stage.setScene(scene);
         stage.show();
     }
-
 }

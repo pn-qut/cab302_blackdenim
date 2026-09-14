@@ -3,7 +3,6 @@ package com.example.habittracker.controller;
 import com.example.habittracker.LoginUI;
 import com.example.habittracker.model.AuthenticationService;
 import com.example.habittracker.model.IUserDAO;
-import com.example.habittracker.model.MockUserDAO;
 import com.example.habittracker.model.SqliteUserDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,7 +31,6 @@ public class RegistrationController {
     private Label errorLabel;
 
     public RegistrationController() {
-        //this.authenticationService = authenticationService;
         userDAO = new SqliteUserDAO();
         this.authenticationService = new AuthenticationService(userDAO);
     }
@@ -47,14 +45,12 @@ public class RegistrationController {
             // Registration succeeded
             errorLabel.setText("");
 
-            onGoToLoginButtonClicked(); //should take user back to login screen.
-            // TODO: implement functionality after registration. e.g. go to login screen??
+            onGoToLoginButtonClicked();
         } catch (IllegalArgumentException e) {
             errorLabel.setText(e.getMessage());
         }
         catch (Exception e){
-            errorLabel.setText("error");  // TODO: change error message
-            // TODO: Display an error message to the user in the UI
+            errorLabel.setText("Unable to register. Please try again.");
         }
     }
 
