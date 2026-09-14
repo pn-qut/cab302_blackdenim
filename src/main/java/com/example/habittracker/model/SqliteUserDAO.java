@@ -74,7 +74,6 @@ public class SqliteUserDAO implements IUserDAO{
             statement.setString(2, user.getPassword());
             statement.executeUpdate();
 
-            // Set the id of the new contact
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 user.setId(generatedKeys.getInt(1));

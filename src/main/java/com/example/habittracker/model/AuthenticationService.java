@@ -86,8 +86,6 @@ public class AuthenticationService implements IAuthenticationService {
             throw new IllegalArgumentException("Password must be between 8 and 20 characters");
         }
 
-        // TODO POSSIBLY integrate special character check
-
         boolean hasDigit = false;
         boolean hasUppercase = false;
         boolean hasLowercase = false;

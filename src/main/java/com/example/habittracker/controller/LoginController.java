@@ -1,6 +1,7 @@
 package com.example.habittracker.controller;
 
 import com.example.habittracker.LoginUI;
+import com.example.habittracker.MainPageApp;
 import com.example.habittracker.model.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,12 +40,21 @@ public class LoginController {
             String password = passwordTextField.getText();
             User user = authenticationService.login(username, password);
 
-            // Login succeeded
-            errorLabel.setText("Login successful");
-
-            // TODO: functionality for what happens after logging in
+            goToMainWindow();
         } catch (Exception e){
             errorLabel.setText("Incorrect username or password.");
+        }
+    }
+
+    /**
+     * Swaps the current stage's scene to the main application window.
+     */
+    private void goToMainWindow() {
+        try {
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            MainPageApp.showOn(stage);
+        } catch (IOException e) {
+            errorLabel.setText("Unable to load the main window.");
         }
     }
 
@@ -54,6 +64,5 @@ public class LoginController {
         FXMLLoader fxmlLoader = new FXMLLoader(LoginUI.class.getResource("registration-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), LoginUI.WIDTH, LoginUI.HEIGHT);
         stage.setScene(scene);
-        // TODO: Go to registration page
     }
 }
