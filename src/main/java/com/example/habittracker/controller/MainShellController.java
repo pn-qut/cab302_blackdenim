@@ -1,5 +1,6 @@
 package com.example.habittracker.controller;
 
+import com.example.habittracker.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -12,6 +13,12 @@ public class MainShellController {
 
     @FXML
     private StackPane contentArea;
+
+    private User user;
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @FXML
     public void initialize() {
@@ -63,6 +70,8 @@ public class MainShellController {
             Object controller = loader.getController();
             if (controller instanceof TodayHabitController) {
                 ((TodayHabitController) controller).setOnSeeAllHabits(() -> loadPage("habits.fxml"));
+            } else if (controller instanceof HabitsController) {
+                ((HabitsController) controller).setUser(user);
             }
 
             contentArea.getChildren().setAll(page);

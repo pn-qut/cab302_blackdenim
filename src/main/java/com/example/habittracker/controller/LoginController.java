@@ -40,7 +40,7 @@ public class LoginController {
             String password = passwordTextField.getText();
             User user = authenticationService.login(username, password);
 
-            goToMainWindow();
+            goToMainWindow(user);
         } catch (Exception e){
             errorLabel.setText("Incorrect username or password.");
         }
@@ -49,10 +49,10 @@ public class LoginController {
     /**
      * Swaps the current stage's scene to the main application window.
      */
-    private void goToMainWindow() {
+    private void goToMainWindow(User user) {
         try {
             Stage stage = (Stage) loginButton.getScene().getWindow();
-            MainPageApp.showOn(stage);
+            MainPageApp.showOn(stage, user);
         } catch (IOException e) {
             errorLabel.setText("Unable to load the main window.");
         }

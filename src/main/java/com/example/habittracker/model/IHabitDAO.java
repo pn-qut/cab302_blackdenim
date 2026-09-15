@@ -8,8 +8,8 @@ import java.util.List;
  */
 public interface IHabitDAO {
     /**
-     * Retrieves all default habits from the database.
-     * @return A list of all default habits in the database.
+     * Retrieves the names of all default habits from the database as a list.
+     * @return A list of all default habit names in the database.
      */
     public List<Habit> getAllHabits();
 

@@ -1,6 +1,6 @@
 package com.example.habittracker.controller;
 
-import com.example.habittracker.model.TrackedHabit;
+import com.example.habittracker.model.*;
 import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,17 +21,13 @@ import java.util.List;
 
 public class HabitsController {
 
-    private static final List<String> PREMADE_HABITS = List.of(
-            "Drink 2L of water",
-            "Go for a walk",
-            "Read for 20 minutes",
-            "Exercise",
-            "Meditate",
-            "Sleep 8 hours"
-    );
+    private IHabitDAO habitDAO;
+    private IUserHabitDAO userSelectedHabitsDAO;
+
+    private int loggedInUserId;
 
     @FXML
-    private ListView<TrackedHabit> currentHabitsList;
+    private ListView<Habit> currentHabitsList;
 
     @FXML
     private Label currentHabitsCountLabel;
@@ -41,45 +37,49 @@ public class HabitsController {
 
     private static final int PREMADE_COLUMNS = 2;
 
-    private final ObservableList<TrackedHabit> currentHabits = FXCollections.observableArrayList(
-            new TrackedHabit("Drink 2L of water"),
-            new TrackedHabit("Go for a walk"),
-            new TrackedHabit("Read for 20 minutes")
-    );
+    private final ObservableList<Habit> currentHabits = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
+        habitDAO = new SqliteHabitDAO();
+        userSelectedHabitsDAO = new SqliteUserSelectedHabitsDAO();
+
         currentHabitsList.setItems(currentHabits);
         currentHabitsList.setCellFactory(list -> new HabitCell());
 
-        currentHabits.addListener((javafx.collections.ListChangeListener<TrackedHabit>) change -> updateHabitsCount());
-        updateHabitsCount();
+        currentHabits.addListener((javafx.collections.ListChangeListener<Habit>) change -> updateHabitsCount());
 
-        buildPremadeHabits();
+        updateHabitsCount();
+    }
+
+    public void setUser(User user) {
+        loggedInUserId = user.getId();
+        currentHabits.setAll(userSelectedHabitsDAO.getUserHabits(loggedInUserId));
+        buildPremadeHabits(habitDAO.getAllHabits());
     }
 
     private void updateHabitsCount() {
         currentHabitsCountLabel.setText(currentHabits.size() + " habits");
     }
 
-    private void buildPremadeHabits() {
+    private void buildPremadeHabits(List<Habit> habits) {
         premadeHabitsPane.getChildren().clear();
-        for (int i = 0; i < PREMADE_HABITS.size(); i++) {
-            String habitName = PREMADE_HABITS.get(i);
+        for (int i = 0; i < habits.size(); i++) {
+            Habit habit = habits.get(i);
             int row = i / PREMADE_COLUMNS;
             int col = i % PREMADE_COLUMNS;
-            premadeHabitsPane.add(createPremadeCard(habitName), col, row);
+            premadeHabitsPane.add(createPremadeCard(habit), col, row);
         }
     }
 
-    private StackPane createPremadeCard(String habitName) {
+    private StackPane createPremadeCard(Habit habit) {
         StackPane card = new StackPane();
         card.setPrefSize(150, 110);
         card.setMaxWidth(Double.MAX_VALUE);
         card.setStyle("-fx-background-color: #9a9a9a; -fx-background-radius: 6;");
         GridPane.setHgrow(card, Priority.ALWAYS);
 
-        Label nameLabel = new Label(habitName);
+        Label nameLabel = new Label(habit.getName());
         nameLabel.setWrapText(true);
         nameLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
         nameLabel.setMaxWidth(120);
@@ -89,15 +89,16 @@ public class HabitsController {
         StackPane.setAlignment(addButton, Pos.BOTTOM_CENTER);
         StackPane.setMargin(addButton, new Insets(8));
 
-        boolean alreadyAdded = isCurrentHabit(habitName);
+        boolean alreadyAdded = isCurrentHabit(habit.getName());
         addButton.setDisable(alreadyAdded);
         if (alreadyAdded) {
             addButton.setText("Added");
         }
 
         addButton.setOnAction(e -> {
-            if (!isCurrentHabit(habitName)) {
-                currentHabits.add(new TrackedHabit(habitName));
+            if (!isCurrentHabit(habit.getName())) {
+                userSelectedHabitsDAO.addHabitToUser(loggedInUserId, habit.getId());
+                currentHabits.add(habit);
             }
             addButton.setDisable(true);
             addButton.setText("Added");
@@ -111,7 +112,7 @@ public class HabitsController {
         return currentHabits.stream().anyMatch(h -> h.getName().equals(habitName));
     }
 
-    private static class HabitCell extends ListCell<TrackedHabit> {
+    private static class HabitCell extends ListCell<Habit> {
         private final CheckBox checkBox = new CheckBox();
         private final Label nameLabel = new Label();
         private final HBox root = new HBox(10, checkBox, nameLabel);
@@ -122,21 +123,14 @@ public class HabitsController {
         }
 
         @Override
-        protected void updateItem(TrackedHabit habit, boolean empty) {
+        protected void updateItem(Habit habit, boolean empty) {
             super.updateItem(habit, empty);
-
-            if (boundProperty != null) {
-                checkBox.selectedProperty().unbindBidirectional(boundProperty);
-                boundProperty = null;
-            }
 
             if (empty || habit == null) {
                 setGraphic(null);
             } else {
                 nameLabel.setText(habit.getName());
-                boundProperty = habit.completedTodayProperty();
-                checkBox.setSelected(habit.isCompletedToday());
-                checkBox.selectedProperty().bindBidirectional(boundProperty);
+                checkBox.setSelected(false);
                 setGraphic(root);
             }
         }

@@ -11,7 +11,7 @@ public class MockHabitDAO implements IHabitDAO{
 
     @Override
     public List<Habit> getAllHabits() {
-        return defaultHabits;
+        return List.of();
     }
 
     @Override
