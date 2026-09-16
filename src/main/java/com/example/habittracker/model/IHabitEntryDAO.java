@@ -1,6 +1,7 @@
 package com.example.habittracker.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface IHabitEntryDAO {
 
@@ -14,5 +15,5 @@ public interface IHabitEntryDAO {
     void uncompleteHabit(int userId, int habitId, LocalDate date);
 
     // Get all the ids for all habits completed by a user on a given date
-    void getCompletedHabitIds(int userId, LocalDate date);
+    List<Integer> getCompletedHabitIds(int userId, LocalDate date);
 }
