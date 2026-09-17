@@ -85,23 +85,22 @@ public class HabitsController {
         nameLabel.setMaxWidth(120);
         StackPane.setAlignment(nameLabel, Pos.CENTER);
 
-        Button addButton = new Button("Add");
+        Button addButton = new Button();
         StackPane.setAlignment(addButton, Pos.BOTTOM_CENTER);
         StackPane.setMargin(addButton, new Insets(8));
 
-        boolean alreadyAdded = isCurrentHabit(habit.getName());
-        addButton.setDisable(alreadyAdded);
-        if (alreadyAdded) {
-            addButton.setText("Added");
-        }
+        addButton.setText(isCurrentHabit(habit.getName()) ? "Remove" : "Add");
 
         addButton.setOnAction(e -> {
-            if (!isCurrentHabit(habit.getName())) {
+            if (isCurrentHabit(habit.getName())) {
+                userSelectedHabitsDAO.removeHabitFromUser(loggedInUserId, habit.getId());
+                currentHabits.removeIf(h -> h.getName().equals(habit.getName()));
+                addButton.setText("Add");
+            } else {
                 userSelectedHabitsDAO.addHabitToUser(loggedInUserId, habit.getId());
                 currentHabits.add(habit);
+                addButton.setText("Remove");
             }
-            addButton.setDisable(true);
-            addButton.setText("Added");
         });
 
         card.getChildren().addAll(nameLabel, addButton);
