@@ -26,7 +26,7 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
                     + "completion_date TEXT NOT NULL, "
                     + "PRIMARY KEY (user_id, habit_id, completion_date), "
                     + "FOREIGN KEY (user_id) REFERENCES users(user_id), "
-                    + "FOREIGN KEY (habit_it) REFERENCES habits(habit_id)"
+                    + "FOREIGN KEY (habit_id) REFERENCES habits(habit_id)"
                     + ")";
             statement.execute(query);
         } catch (Exception e) {
@@ -61,7 +61,7 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
     public void completeHabit(int userId, int habitId, LocalDate date) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO user_entries (user_id, habit_id, completion_date) VALUES (?, ?, ?)"
+                    "INSERT INTO habit_entries (user_id, habit_id, completion_date) VALUES (?, ?, ?)"
             );
             statement.setInt(1, userId);
             statement.setInt(2, habitId);
@@ -94,15 +94,15 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
         List<Integer> habitIds = new ArrayList<>();
 
         try {
-            String query = "SELECT habit_id, "
-                    + "FROM habit_completions "
+            String query = "SELECT habit_id "
+                    + "FROM habit_entries "
                     + "WHERE user_id = ? "
-                    + "AND completed_date = ?";
+                    + "AND completion_date = ?";
 
             PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setInt(1, userId);
-            statement.setString(3, date.toString());
+            statement.setString(2, date.toString());
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {

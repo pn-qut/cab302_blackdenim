@@ -18,10 +18,6 @@ public class MainShellController {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    @FXML
-    public void initialize() {
         loadPage("todayhabit.fxml");
     }
 
@@ -70,6 +66,7 @@ public class MainShellController {
             Object controller = loader.getController();
             if (controller instanceof TodayHabitController) {
                 ((TodayHabitController) controller).setOnSeeAllHabits(() -> loadPage("habits.fxml"));
+                ((TodayHabitController) controller).setUser(user);
             } else if (controller instanceof HabitsController) {
                 ((HabitsController) controller).setUser(user);
             }
