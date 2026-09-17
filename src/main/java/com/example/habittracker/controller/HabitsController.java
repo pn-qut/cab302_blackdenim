@@ -1,7 +1,6 @@
 package com.example.habittracker.controller;
 
 import com.example.habittracker.model.*;
-import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,12 +16,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class HabitsController {
 
     private IHabitDAO habitDAO;
     private IUserHabitDAO userSelectedHabitsDAO;
+    private IHabitEntryDAO habitEntryDAO;
 
     private int loggedInUserId;
 
@@ -43,6 +44,7 @@ public class HabitsController {
     public void initialize() {
         habitDAO = new SqliteHabitDAO();
         userSelectedHabitsDAO = new SqliteUserSelectedHabitsDAO();
+        habitEntryDAO = new SqliteHabitEntryDAO();
 
         currentHabitsList.setItems(currentHabits);
         currentHabitsList.setCellFactory(list -> new HabitCell());
@@ -111,14 +113,25 @@ public class HabitsController {
         return currentHabits.stream().anyMatch(h -> h.getName().equals(habitName));
     }
 
-    private static class HabitCell extends ListCell<Habit> {
+    private class HabitCell extends ListCell<Habit> {
         private final CheckBox checkBox = new CheckBox();
         private final Label nameLabel = new Label();
         private final HBox root = new HBox(10, checkBox, nameLabel);
-        private BooleanProperty boundProperty;
 
         HabitCell() {
             root.setAlignment(Pos.CENTER_LEFT);
+            checkBox.setOnAction(e -> {
+                Habit habit = getItem();
+                if (habit == null) {
+                    return;
+                }
+                LocalDate today = LocalDate.now();
+                if (checkBox.isSelected()) {
+                    habitEntryDAO.completeHabit(loggedInUserId, habit.getId(), today);
+                } else {
+                    habitEntryDAO.uncompleteHabit(loggedInUserId, habit.getId(), today);
+                }
+            });
         }
 
         @Override
@@ -129,7 +142,7 @@ public class HabitsController {
                 setGraphic(null);
             } else {
                 nameLabel.setText(habit.getName());
-                checkBox.setSelected(false);
+                checkBox.setSelected(habitEntryDAO.isHabitCompleted(loggedInUserId, habit.getId(), LocalDate.now()));
                 setGraphic(root);
             }
         }

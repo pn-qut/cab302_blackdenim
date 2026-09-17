@@ -50,7 +50,9 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
             statement.setString(3, date.toString());
 
             ResultSet resultSet = statement.executeQuery();
-            return resultSet.next();
+            if (resultSet.next()) {
+                return resultSet.getBoolean(1);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.example.habittracker.controller.MainShellController;
 import com.example.habittracker.model.User;
-import javafx.application.Application;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
