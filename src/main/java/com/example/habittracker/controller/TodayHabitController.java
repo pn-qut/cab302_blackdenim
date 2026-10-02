@@ -1,10 +1,8 @@
 package com.example.habittracker.controller;
 
+import com.example.habittracker.model.DAOFactory;
 import com.example.habittracker.model.Habit;
-import com.example.habittracker.model.IHabitEntryDAO;
-import com.example.habittracker.model.IUserHabitDAO;
-import com.example.habittracker.model.SqliteHabitEntryDAO;
-import com.example.habittracker.model.SqliteUserSelectedHabitsDAO;
+import com.example.habittracker.model.HabitService;
 import com.example.habittracker.model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,8 +15,7 @@ public class TodayHabitController {
 
     private Runnable onAddHabitAction;
 
-    private final IUserHabitDAO userHabitDAO = new SqliteUserSelectedHabitsDAO();
-    private final IHabitEntryDAO habitEntryDAO = new SqliteHabitEntryDAO();
+    private final HabitService habitService = DAOFactory.createHabitService();
 
     private int loggedInUserId;
 
@@ -27,12 +24,12 @@ public class TodayHabitController {
     @FXML
     public void initialize() {
         todayHabitsList.setItems(todayHabits);
-        todayHabitsList.setCellFactory(list -> new HabitCell(habitEntryDAO, () -> loggedInUserId));
+        todayHabitsList.setCellFactory(list -> new HabitCell(habitService, () -> loggedInUserId));
     }
 
     public void setUser(User user) {
         loggedInUserId = user.getId();
-        todayHabits.setAll(userHabitDAO.getUserHabits(loggedInUserId));
+        todayHabits.setAll(habitService.getUserHabits(loggedInUserId));
     }
 
     public void setOnAddHabit(Runnable action) {
