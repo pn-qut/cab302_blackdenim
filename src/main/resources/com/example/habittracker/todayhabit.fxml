@@ -21,11 +21,11 @@
     <Label text="Today's habits"
            styleClass="page-title"/>
 
-    <ListView fx:id="todayList"
+    <ListView fx:id="todayHabitsList"
               VBox.vgrow="ALWAYS"/>
 
     <Button text="+ Add a habit"
-            onAction="#onSeeAllHabits"
+            onAction="#onAddHabitClicked"
             maxWidth="Infinity"/>
 
 </VBox>

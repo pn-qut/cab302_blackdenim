@@ -11,6 +11,10 @@ import java.io.IOException;
 
 public class MainShellController {
 
+    private static final String VIEW_FOLDER = "/com/example/habittracker/";
+    private static final String HOME_VIEW = "todayhabit.fxml";
+    private static final String HABITS_VIEW = "habits.fxml";
+
     @FXML
     private StackPane contentArea;
 
@@ -18,55 +22,60 @@ public class MainShellController {
 
     public void setUser(User user) {
         this.user = user;
-        loadPage("todayhabit.fxml");
+        loadPage(HOME_VIEW);
     }
 
     @FXML
-    private void HomeBar() {
-        loadPage("todayhabit.fxml");
+    private void onHomeClicked() {
+        loadPage(HOME_VIEW);
     }
 
     @FXML
-    private void HabitsBar() {
-        loadPage("habits.fxml");
+    private void onHabitsClicked() {
+        loadPage(HABITS_VIEW);
     }
 
     @FXML
-    private void CommunityGoalsBar() {
-        contentArea.getChildren().setAll(new Label("Community goal page is coming soon!"));
+    private void onCommunityGoalsClicked() {
+        showComingSoon("Community goal page");
     }
 
     @FXML
-    private void LeaderboardBar() {
-        contentArea.getChildren().setAll(new Label("Leaderboard page is coming soon!"));
+    private void onLeaderboardClicked() {
+        showComingSoon("Leaderboard page");
     }
 
     @FXML
-    private void AchievementsBar() {
-        contentArea.getChildren().setAll(new Label("Achievement page is coming soon!"));
+    private void onAchievementsClicked() {
+        showComingSoon("Achievement page");
     }
 
     @FXML
-    private void ProfileBar() {
-        contentArea.getChildren().setAll(new Label("Profile page is coming soon!"));
+    private void onProfileClicked() {
+        showComingSoon("Profile page");
     }
 
     @FXML
-    private void SettingsBar() {
-        contentArea.getChildren().setAll(new Label("Setting page is coming soon!"));
+    private void onSettingsClicked() {
+        showComingSoon("Setting page");
+    }
+
+    private void showComingSoon(String pageName) {
+        contentArea.getChildren().setAll(new Label(pageName + " is coming soon!"));
     }
 
     private void loadPage(String path) {
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/com/example/habittracker/" + path)
+                    getClass().getResource(VIEW_FOLDER + path)
             );
             Node page = loader.load();
 
             Object controller = loader.getController();
             if (controller instanceof TodayHabitController) {
-                ((TodayHabitController) controller).setOnSeeAllHabits(() -> loadPage("habits.fxml"));
-                ((TodayHabitController) controller).setUser(user);
+                TodayHabitController homeController = (TodayHabitController) controller;
+                homeController.setOnAddHabit(() -> loadPage(HABITS_VIEW));
+                homeController.setUser(user);
             } else if (controller instanceof HabitsController) {
                 ((HabitsController) controller).setUser(user);
             }

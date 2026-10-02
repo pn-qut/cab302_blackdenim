@@ -19,33 +19,33 @@
             </padding>
 
             <Button text="Home"
-                    onAction="#HomeBar"
+                    onAction="#onHomeClicked"
                     maxWidth="Infinity"/>
 
             <Button text="Habits"
-                    onAction="#HabitsBar"
+                    onAction="#onHabitsClicked"
                     maxWidth="Infinity"/>
 
             <Button text="Community Goals"
-                    onAction="#CommunityGoalsBar"
+                    onAction="#onCommunityGoalsClicked"
                     maxWidth="Infinity"/>
 
             <Button text="Leaderboard"
-                    onAction="#LeaderboardBar"
+                    onAction="#onLeaderboardClicked"
                     maxWidth="Infinity"/>
 
             <Button text="Achievements"
-                    onAction="#AchievementsBar"
+                    onAction="#onAchievementsClicked"
                     maxWidth="Infinity"/>
 
             <VBox VBox.vgrow="ALWAYS"/>
 
             <Button text="Profile"
-                    onAction="#ProfileBar"
+                    onAction="#onProfileClicked"
                     maxWidth="Infinity"/>
 
             <Button text="Settings"
-                    onAction="#SettingsBar"
+                    onAction="#onSettingsClicked"
                     maxWidth="Infinity"/>
 
         </VBox>
