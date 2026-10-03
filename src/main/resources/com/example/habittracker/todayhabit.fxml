@@ -18,8 +18,15 @@
                 left="50"/>
     </padding>
 
+    <VBox styleClass="header">
+        <Label fx:id="dateLabel"
+               styleClass="date-label"/>
+        <Label fx:id="greetingLabel"
+               styleClass="page-title"/>
+    </VBox>
+
     <Label text="Today's habits"
-           styleClass="page-title"/>
+           styleClass="card-title"/>
 
     <ListView fx:id="todayHabitsList"
               VBox.vgrow="ALWAYS"/>
