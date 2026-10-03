@@ -2,7 +2,9 @@ package com.example.habittracker.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class MockHabitEntryDAO implements IHabitEntryDAO {
@@ -46,6 +48,21 @@ public class MockHabitEntryDAO implements IHabitEntryDAO {
             }
         }
         return habitIds;
+    }
+
+    /**
+     * Gets how many days each habit was completed by a user between two dates (inclusive).
+     */
+    @Override
+    public Map<Integer, Integer> countCompletionsByHabit(int userId, LocalDate from, LocalDate to) {
+        Map<Integer, Integer> counts = new HashMap<>();
+        for (Entry entry : entries) {
+            boolean inRange = !entry.date.isBefore(from) && !entry.date.isAfter(to);
+            if (entry.userId == userId && inRange) {
+                counts.merge(entry.habitId, 1, Integer::sum);
+            }
+        }
+        return counts;
     }
 
     private static class Entry {

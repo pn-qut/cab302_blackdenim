@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SqliteHabitEntryDAO implements IHabitEntryDAO {
     private Connection connection;
@@ -115,5 +117,32 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
             e.printStackTrace();
         }
         return habitIds;
+    }
+
+    @Override
+    public Map<Integer, Integer> countCompletionsByHabit(int userId, LocalDate from, LocalDate to) {
+        Map<Integer, Integer> counts = new HashMap<>();
+
+        try {
+            String query = "SELECT habit_id, COUNT(*) AS completions "
+                    + "FROM habit_entries "
+                    + "WHERE user_id = ? "
+                    + "AND completion_date BETWEEN ? AND ? "
+                    + "GROUP BY habit_id";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setInt(1, userId);
+            statement.setString(2, from.toString());
+            statement.setString(3, to.toString());
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                counts.put(resultSet.getInt("habit_id"), resultSet.getInt("completions"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return counts;
     }
 }

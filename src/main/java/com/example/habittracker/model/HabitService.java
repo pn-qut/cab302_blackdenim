@@ -1,7 +1,11 @@
 package com.example.habittracker.model;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Handles the logic for a user's habits and their completions,
@@ -18,7 +22,6 @@ public class HabitService {
 
     /**
      * Gets all habits the user has selected.
-     * @param userId The id of the user.
      */
     public List<Habit> getUserHabits(int userId) {
         return userHabitDAO.getUserHabits(userId);
@@ -26,8 +29,6 @@ public class HabitService {
 
     /**
      * Adds a habit to the user's selected habits.
-     * @param userId The id of the user.
-     * @param habitId The id of the habit to add.
      */
     public void addHabitToUser(int userId, int habitId) {
         userHabitDAO.addHabitToUser(userId, habitId);
@@ -35,8 +36,6 @@ public class HabitService {
 
     /**
      * Removes a habit from the user's selected habits.
-     * @param userId The id of the user.
-     * @param habitId The id of the habit to remove.
      */
     public void removeHabitFromUser(int userId, int habitId) {
         userHabitDAO.removeHabitFromUser(userId, habitId);
@@ -44,9 +43,6 @@ public class HabitService {
 
     /**
      * Checks if the user completed a habit on a given date.
-     * @param userId The id of the user.
-     * @param habitId The id of the habit.
-     * @param date The date to check.
      */
     public boolean isHabitCompleted(int userId, int habitId, LocalDate date) {
         return entryDAO.isHabitCompleted(userId, habitId, date);
@@ -54,10 +50,6 @@ public class HabitService {
 
     /**
      * Marks a habit as completed or not completed on a given date.
-     * @param userId The id of the user.
-     * @param habitId The id of the habit.
-     * @param date The date of the completion.
-     * @param completed True to mark the habit as completed, false to remove the completion.
      */
     public void setHabitCompleted(int userId, int habitId, LocalDate date, boolean completed) {
         if (completed) {
@@ -65,5 +57,19 @@ public class HabitService {
         } else {
             entryDAO.uncompleteHabit(userId, habitId, date);
         }
+    }
+
+    /**
+     * Gets how many days each of the user's habits was completed this week, from Monday to Sunday.
+     */
+    public List<HabitProgress> getWeeklyProgress(int userId, LocalDate today) {
+        LocalDate monday = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        Map<Integer, Integer> counts = entryDAO.countCompletionsByHabit(userId, monday, monday.plusDays(6));
+
+        List<HabitProgress> progress = new ArrayList<>();
+        for (Habit habit : userHabitDAO.getUserHabits(userId)) {
+            progress.add(new HabitProgress(habit, counts.getOrDefault(habit.getId(), 0), 7));
+        }
+        return progress;
     }
 }
