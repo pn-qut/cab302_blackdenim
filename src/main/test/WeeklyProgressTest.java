@@ -26,6 +26,16 @@ public class WeeklyProgressTest {
         habitService = new HabitService(entryDAO, userHabitDAO);
     }
 
+    private void complete(Habit habit, LocalDate... dates) {
+        for (LocalDate date : dates) {
+            habitService.setHabitCompleted(USER_ID, habit.getId(), date, true);
+        }
+    }
+
+    private int firstHabitDaysThisWeek(LocalDate today) {
+        return habitService.getWeeklyProgress(USER_ID, today).get(0).getCompletedDays();
+    }
+
     @Test
     public void NoHabitsGivesNoProgress() {
         assertTrue(habitService.getWeeklyProgress(USER_ID, TODAY).isEmpty());
@@ -45,37 +55,33 @@ public class WeeklyProgressTest {
     @Test
     public void CountsCompletionsFromMondayToToday() {
         habitService.addHabitToUser(USER_ID, drinkWater.getId());
-        habitService.setHabitCompleted(USER_ID, drinkWater.getId(), MONDAY, true);
-        habitService.setHabitCompleted(USER_ID, drinkWater.getId(), MONDAY.plusDays(2), true);
-        habitService.setHabitCompleted(USER_ID, drinkWater.getId(), TODAY, true);
+        complete(drinkWater, MONDAY, MONDAY.plusDays(2), TODAY);
 
-        assertEquals(3, habitService.getWeeklyProgress(USER_ID, TODAY).get(0).getCompletedDays());
+        assertEquals(3, firstHabitDaysThisWeek(TODAY));
     }
 
     @Test
     public void IgnoresCompletionsBeforeMonday() {
         habitService.addHabitToUser(USER_ID, drinkWater.getId());
-        habitService.setHabitCompleted(USER_ID, drinkWater.getId(), MONDAY.minusDays(1), true);
+        complete(drinkWater, MONDAY.minusDays(1));
 
-        assertEquals(0, habitService.getWeeklyProgress(USER_ID, TODAY).get(0).getCompletedDays());
+        assertEquals(0, firstHabitDaysThisWeek(TODAY));
     }
 
     @Test
     public void WeekStartsOnMondayWhenTodayIsMonday() {
         habitService.addHabitToUser(USER_ID, drinkWater.getId());
-        habitService.setHabitCompleted(USER_ID, drinkWater.getId(), MONDAY, true);
-        habitService.setHabitCompleted(USER_ID, drinkWater.getId(), MONDAY.minusDays(1), true);
+        complete(drinkWater, MONDAY, MONDAY.minusDays(1));
 
-        assertEquals(1, habitService.getWeeklyProgress(USER_ID, MONDAY).get(0).getCompletedDays());
+        assertEquals(1, firstHabitDaysThisWeek(MONDAY));
     }
 
     @Test
     public void EachHabitIsCountedSeparately() {
         habitService.addHabitToUser(USER_ID, drinkWater.getId());
         habitService.addHabitToUser(USER_ID, exercise.getId());
-        habitService.setHabitCompleted(USER_ID, drinkWater.getId(), MONDAY, true);
-        habitService.setHabitCompleted(USER_ID, drinkWater.getId(), TODAY, true);
-        habitService.setHabitCompleted(USER_ID, exercise.getId(), TODAY, true);
+        complete(drinkWater, MONDAY, TODAY);
+        complete(exercise, TODAY);
 
         List<HabitProgress> progress = habitService.getWeeklyProgress(USER_ID, TODAY);
 
@@ -88,7 +94,7 @@ public class WeeklyProgressTest {
         habitService.addHabitToUser(USER_ID, drinkWater.getId());
         habitService.setHabitCompleted(OTHER_USER_ID, drinkWater.getId(), TODAY, true);
 
-        assertEquals(0, habitService.getWeeklyProgress(USER_ID, TODAY).get(0).getCompletedDays());
+        assertEquals(0, firstHabitDaysThisWeek(TODAY));
     }
 
     @Test

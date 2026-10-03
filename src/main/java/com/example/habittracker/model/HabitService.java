@@ -12,12 +12,35 @@ import java.util.Map;
  * so controllers do not talk to the DAOs directly.
  */
 public class HabitService {
+    private static final int DAYS_IN_WEEK = 7;
+
     private final IHabitEntryDAO entryDAO;
     private final IUserHabitDAO userHabitDAO;
+    private final List<HabitObserver> observers = new ArrayList<>();
 
     public HabitService(IHabitEntryDAO entryDAO, IUserHabitDAO userHabitDAO) {
         this.entryDAO = entryDAO;
         this.userHabitDAO = userHabitDAO;
+    }
+
+    /**
+     * Registers an observer to be told whenever a habit is completed or uncompleted.
+     */
+    public void attachObserver(HabitObserver observer) {
+        observers.add(observer);
+    }
+
+    /**
+     * Stops an observer from being told about habit changes.
+     */
+    public void detachObserver(HabitObserver observer) {
+        observers.remove(observer);
+    }
+
+    private void notifyObservers() {
+        for (HabitObserver observer : observers) {
+            observer.onHabitsChanged();
+        }
     }
 
     /**
@@ -57,19 +80,29 @@ public class HabitService {
         } else {
             entryDAO.uncompleteHabit(userId, habitId, date);
         }
+        notifyObservers();
     }
 
     /**
      * Gets how many days each of the user's habits was completed this week, from Monday to Sunday.
      */
     public List<HabitProgress> getWeeklyProgress(int userId, LocalDate today) {
-        LocalDate monday = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        Map<Integer, Integer> counts = entryDAO.countCompletionsByHabit(userId, monday, monday.plusDays(6));
+        LocalDate weekStart = startOfWeek(today);
+        LocalDate weekEnd = weekStart.plusDays(DAYS_IN_WEEK - 1);
+        Map<Integer, Integer> counts = entryDAO.countCompletionsByHabit(userId, weekStart, weekEnd);
 
         List<HabitProgress> progress = new ArrayList<>();
         for (Habit habit : userHabitDAO.getUserHabits(userId)) {
-            progress.add(new HabitProgress(habit, counts.getOrDefault(habit.getId(), 0), 7));
+            int completedDays = counts.getOrDefault(habit.getId(), 0);
+            progress.add(new HabitProgress(habit, completedDays, DAYS_IN_WEEK));
         }
         return progress;
+    }
+
+    /**
+     * Gets the Monday of the week that a date falls in.
+     */
+    private static LocalDate startOfWeek(LocalDate date) {
+        return date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
     }
 }
