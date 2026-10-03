@@ -12,8 +12,9 @@ import javafx.stage.Stage;
 
 public class MainPageApp {
     public static final String TITLE = "Habit Tracker";
-    public static final int WIDTH = 1000;
-    public static final int HEIGHT = 500;
+    public static final int WIDTH = 1280;
+    public static final int HEIGHT = 800;
+    public static final String STYLESHEET = "style.css";
 
     /**
      * Loads the main window into the given stage. Used to transition into the
@@ -28,6 +29,7 @@ public class MainPageApp {
         controller.setUser(user);
 
         Scene scene = new Scene(root, WIDTH, HEIGHT);
+        scene.getStylesheets().add(MainPageApp.class.getResource(STYLESHEET).toExternalForm());
         stage.setTitle(TITLE);
         stage.setScene(scene);
         stage.show();
