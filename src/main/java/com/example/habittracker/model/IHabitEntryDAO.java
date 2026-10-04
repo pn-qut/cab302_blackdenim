@@ -16,4 +16,10 @@ public interface IHabitEntryDAO {
 
     // Get all the ids for all habits completed by a user on a given date
     List<Integer> getCompletedHabitIds(int userId, LocalDate date);
+
+    // Get all the dates (from most recent to least recent) that a user has completed a given habit
+    public List<LocalDate> getCompletionDates(int userId, int habitId);
+
+    // Get a user's streak length for completing a given habit
+    public int getCurrentStreak(int userId, int habitId);
 }

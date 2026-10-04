@@ -15,6 +15,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 
 import java.time.LocalDate;
 
@@ -59,10 +61,15 @@ public class TodayHabitController {
     private class HabitCell extends ListCell<Habit> {
         private final CheckBox checkBox = new CheckBox();
         private final Label nameLabel = new Label();
-        private final HBox root = new HBox(10, checkBox, nameLabel);
+        private final Label streakLabel = new Label();
+        private final Region spacer = new Region();
+        private final HBox root = new HBox(10, checkBox, nameLabel, spacer, streakLabel);
 
         HabitCell() {
             root.setAlignment(Pos.CENTER_LEFT);
+
+            HBox.setHgrow(spacer, Priority.ALWAYS);
+
             checkBox.setOnAction(e -> {
                 Habit habit = getItem();
                 if (habit == null) {
@@ -85,7 +92,15 @@ public class TodayHabitController {
                 setGraphic(null);
             } else {
                 nameLabel.setText(habit.getName());
-                checkBox.setSelected(habitEntryDAO.isHabitCompleted(loggedInUserId, habit.getId(), LocalDate.now()));
+
+                LocalDate today = LocalDate.now();
+                boolean completed = habitEntryDAO.isHabitCompleted(loggedInUserId, habit.getId(), today);
+
+                checkBox.setSelected(completed);
+
+                int streak = habitEntryDAO.getCurrentStreak(loggedInUserId, habit.getId());
+                streakLabel.setText(streak + " day streak");
+
                 setGraphic(root);
             }
         }

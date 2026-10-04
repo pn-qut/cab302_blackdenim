@@ -63,7 +63,7 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
     public void completeHabit(int userId, int habitId, LocalDate date) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO habit_entries (user_id, habit_id, completion_date) VALUES (?, ?, ?)"
+                    "INSERT OR IGNORE INTO habit_entries (user_id, habit_id, completion_date) VALUES (?, ?, ?)"
             );
             statement.setInt(1, userId);
             statement.setInt(2, habitId);
@@ -116,4 +116,65 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
         }
         return habitIds;
     }
+
+    @Override
+    public List<LocalDate> getCompletionDates(int userId, int habitId){
+        List<LocalDate> dates = new ArrayList<>();
+
+        try{
+            String query = "SELECT completion_date "
+                    + "FROM habit_entries "
+                    + "WHERE user_id = ? "
+                    + "AND habit_id = ?"
+                    + "ORDER BY completion_date DESC";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setInt(1, userId);
+            statement.setInt(2, habitId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                LocalDate completionDate = LocalDate.parse(resultSet.getString("completion_date"));
+                dates.add(completionDate);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dates;
+    }
+
+    @Override
+    public int getCurrentStreak(int userId, int habitId) {
+        List<LocalDate> dates = getCompletionDates(userId, habitId);
+
+        if (dates.isEmpty()) {
+            return 0;
+        }
+
+        LocalDate today = LocalDate.now();
+        LocalDate expectedDate;
+
+        if (isHabitCompleted(userId, habitId, today)){
+            expectedDate = today;
+        } else {
+            // If the habit hasn't been completed today, the streak will continue from yesterday
+            expectedDate = today.minusDays(1);
+        }
+
+        int streak = 0;
+
+        // Calculate the length of the streak
+        for (LocalDate date: dates) {
+            if (date.equals(expectedDate)) {
+                streak++;
+                expectedDate = expectedDate.minusDays(1);
+            } else if (date.isBefore(expectedDate)) {
+                break;
+            }
+        }
+
+        return streak;
+    }
+
 }

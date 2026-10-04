@@ -8,7 +8,6 @@ public class HabitEntry {
     private String username;
     private int habit_id;
     private LocalDate date;
-    private boolean completed;
     // TODO LATER: In future sprint once option to input values as a habit entry is added
     //private int measurementValue;
 
@@ -17,7 +16,6 @@ public class HabitEntry {
         this.username = username;
         this.habit_id = habit_id;
         this.date = date;
-        this.completed = completed;
     }
 
     public int getId() {
@@ -50,13 +48,5 @@ public class HabitEntry {
 
     public void setDate(LocalDate date) {
         this.date = date;
-    }
-
-    public boolean isCompleted() {
-        return completed;
-    }
-
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
     }
 }
