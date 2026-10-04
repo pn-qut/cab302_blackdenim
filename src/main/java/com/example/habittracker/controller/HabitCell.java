@@ -16,7 +16,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 
 /**
- * List cell that shows a habit with a checkbox for marking it as completed today.
  * List cell that shows a habit with a checkbox for marking it as completed today,
  * and optionally some detail text on the right.
  */
