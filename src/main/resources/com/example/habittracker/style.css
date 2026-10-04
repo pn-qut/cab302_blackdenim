@@ -17,12 +17,25 @@
     -fx-text-fill: -text;
 }
 
-/* ---------- Sidebar ---------- */
+/*  Sidebar  */
 
 .navigation {
     -fx-background-color: #fbfbf9;
     -fx-border-color: transparent -border transparent transparent;
     -fx-spacing: 6;
+}
+
+.app-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-padding: 4 14 18 14;
+}
+
+.nav-section-label {
+    -fx-font-family: "Menlo";
+    -fx-font-size: 11px;
+    -fx-text-fill: -text-muted;
+    -fx-padding: 18 14 6 14;
 }
 
 .nav-button {
@@ -44,7 +57,7 @@
     -fx-font-weight: bold;
 }
 
-/* ---------- Page and header ---------- */
+/*  Page and header  */
 
 .home-page {
     -fx-background-color: -page-bg;
@@ -69,7 +82,7 @@
     -fx-background-radius: 999;
 }
 
-/* ---------- Cards ---------- */
+/*  Cards  */
 
 .card {
     -fx-background-color: -card-bg;
@@ -85,7 +98,7 @@
     -fx-font-weight: bold;
 }
 
-/* ---------- Habit list ---------- */
+/*  Habit list  */
 
 .list-view,
 .list-view:focused {
@@ -116,7 +129,7 @@
     -fx-strikethrough: true;
 }
 
-/* ---------- Checkboxes ---------- */
+/*  Checkboxes  */
 
 .check-box .box {
     -fx-background-color: white;
@@ -135,7 +148,7 @@
     -fx-background-color: white;
 }
 
-/* ---------- Progress bars ---------- */
+/*  Progress bars  */
 
 .progress-bar .track {
     -fx-background-color: -green-light;
@@ -148,7 +161,7 @@
     -fx-background-radius: 999;
 }
 
-/* ---------- Buttons ---------- */
+/*  Buttons  */
 
 .add-habit-button {
     -fx-background-color: transparent;
