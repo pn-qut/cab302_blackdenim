@@ -1,6 +1,7 @@
 package com.example.habittracker.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MockUserDAO implements IUserDAO{
@@ -25,6 +26,14 @@ public class MockUserDAO implements IUserDAO{
     @Override
     public boolean usernameExists(String username) {
         return findByUsername(username) != null;
+    }
+
+    @Override
+    public List<String> findSuburbsByPostcode(int postcode) {
+        if (postcode == 4000) {
+            return Collections.singletonList("Test Suburb");
+        }
+        return Collections.emptyList();
     }
 
     /**

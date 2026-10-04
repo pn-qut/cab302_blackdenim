@@ -6,15 +6,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AuthenticationServiceTest {
-    private final User user = new User("John43", "password12");
+    private final User user = new User("John43", "password12", 4000);
     private AuthenticationService authenticationService;
     IUserDAO userDAO = new MockUserDAO();
     private User[] users = {
-            new User("John43", "password12"),
-            new User("Jane", "test14"),
-            new User("Jay", "Doe"),
-            new User("Alice", "Testpw12"),
-            new User("Tom", "G352")
+            new User("John43", "password12", 4000),
+            new User("Jane", "test14", 4000),
+            new User("Jay", "Doe", 4000),
+            new User("Alice", "Testpw12", 4000),
+            new User("Tom", "G352", 4000)
     };
 
     @BeforeEach
@@ -27,93 +27,107 @@ public class AuthenticationServiceTest {
 
     @Test
     public void RegisterAndLoginWithValidUsernameAndPassword(){
-        authenticationService.register("Sam", "Testjh14");
+        authenticationService.register("Sam", "Testjh14", 4000);
         User user = authenticationService.login("Sam", "Testjh14");
 
         assertEquals("Sam", user.getUsername());
         assertEquals("Testjh14", user.getPassword());
+        assertEquals(4000, user.getPostcode());
     }
 
     @Test
     public void RegisterWithTakenUsernameThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register("Jay", "pwdfbd");
+            authenticationService.register("Jay", "pwdfbd", 4000);
         });
+    }
+
+    @Test
+    public void RegisterWithPostcodeNotInLookupThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.register("Sam", "Testjh14", 4999);
+        });
+    }
+
+    @Test
+    public void GetSuburbsByPostcodeReturnsLookupResults() {
+        assertEquals(java.util.Collections.singletonList("Test Suburb"),
+                authenticationService.getSuburbsByPostcode(4000));
     }
 
     @Test
     public void RegisterWithPasswordLessThan8CharsThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "Tom", "Passw1" );
+            authenticationService.register( "Tom", "Passw1", 4000 );
         });
     }
 
     @Test
     public void RegisterWithPasswordWithoutUppercaseCharThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "Tom", "password1" );
+            authenticationService.register( "Tom", "password1", 4000 );
         });
     }
 
     @Test
     public void RegisterWithPasswordWithoutLowercaseCharThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "Tom", "PASSWORD1" );
+            authenticationService.register( "Tom", "PASSWORD1", 4000 );
         });
     }
 
     @Test
     public void RegisterWithPasswordWithoutNumberThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "Tom", "Password" );
+            authenticationService.register( "Tom", "Password", 4000 );
         });
     }
 
     @Test
     public void RegisterWithNullOrEmptyPasswordThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "Tom", "");
+            authenticationService.register( "Tom", "", 4000);
         });
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "Tom", null);
+            authenticationService.register( "Tom", null, 4000);
         });
     }
 
     @Test
     public void RegisterWithNullOrEmptyUsernameThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( null, "Password12");
+            authenticationService.register( null, "Password12", 4000);
         });
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "", "Password12");
+            authenticationService.register( "", "Password12", 4000);
         });
     }
 
     @Test
     public void RegisterWithUsernameTooLongThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "asdfghjklasdfghjklasd", "Password12");
+            authenticationService.register( "asdfghjklasdfghjklasd", "Password12", 4000);
         });
     }
 
     @Test
     public void RegisterWithPasswordTooLongThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "Tom", "Asdfghjklasdfghjkla12");
+            authenticationService.register( "Tom", "Asdfghjklasdfghjkla12", 4000);
         });
     }
 
     @Test
     public void RegisterWithUsernameContainingSpaceThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "T om", "Password12");
+            authenticationService.register( "T om", "Password12", 4000);
         });
     }
 
     @Test
     public void RegisterWithPasswordContainingSpaceThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "Tom", "Passw ord12");
+            authenticationService.register( "Tom", "Passw ord12", 4000);
         });
     }
 
