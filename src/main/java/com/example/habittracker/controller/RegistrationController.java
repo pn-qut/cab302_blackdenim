@@ -24,6 +24,8 @@ public class RegistrationController {
     @FXML
     private TextField passwordTextField;
     @FXML
+    private TextField postcodeTextField;
+    @FXML
     private Button registerConfirmButton;
     @FXML
     private Hyperlink loginLink;
@@ -40,7 +42,13 @@ public class RegistrationController {
         try {
             String username = usernameTextField.getText();
             String password = passwordTextField.getText();
-            authenticationService.register(username, password);
+            String postcodeText = postcodeTextField.getText().trim();
+            if (!postcodeText.matches("\\d{4}")) {
+                errorLabel.setText("Enter a four-digit Queensland postcode.");
+                return;
+            }
+            int postcode = Integer.parseInt(postcodeText);
+            authenticationService.register(username, password, postcode);
 
             // Registration succeeded
             errorLabel.setText("");
