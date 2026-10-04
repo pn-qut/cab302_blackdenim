@@ -84,6 +84,13 @@ public class HabitService {
     }
 
     /**
+     * Gets the most recent date the user completed a habit, or null if never completed.
+     */
+    public LocalDate getLastCompletionDate(int userId, int habitId) {
+        return entryDAO.getLastCompletionDate(userId, habitId);
+    }
+
+    /**
      * Gets how many days each of the user's habits was completed this week, from Monday to Sunday.
      */
     public List<HabitProgress> getWeeklyProgress(int userId, LocalDate today) {

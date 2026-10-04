@@ -145,4 +145,27 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
         }
         return counts;
     }
+
+    @Override
+    public LocalDate getLastCompletionDate(int userId, int habitId) {
+        try {
+            String query = "SELECT MAX(completion_date) AS last_date "
+                    + "FROM habit_entries "
+                    + "WHERE user_id = ? "
+                    + "AND habit_id = ?";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setInt(1, userId);
+            statement.setInt(2, habitId);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next() && resultSet.getString("last_date") != null) {
+                return LocalDate.parse(resultSet.getString("last_date"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

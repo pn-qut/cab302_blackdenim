@@ -20,4 +20,7 @@ public interface IHabitEntryDAO {
 
     // Get how many days each habit was completed between two dates (inclusive), keyed by habit id
     Map<Integer, Integer> countCompletionsByHabit(int userId, LocalDate from, LocalDate to);
+
+    // Get the most recent date a user completed a habit, or null if never completed
+    LocalDate getLastCompletionDate(int userId, int habitId);
 }

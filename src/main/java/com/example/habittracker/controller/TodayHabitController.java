@@ -5,6 +5,7 @@ import com.example.habittracker.model.Habit;
 import com.example.habittracker.model.HabitObserver;
 import com.example.habittracker.model.HabitProgress;
 import com.example.habittracker.model.HabitService;
+import com.example.habittracker.model.LastDoneText;
 import com.example.habittracker.model.TimeOfDay;
 import com.example.habittracker.model.User;
 import javafx.collections.FXCollections;
@@ -50,13 +51,19 @@ public class TodayHabitController implements HabitObserver {
     @FXML
     public void initialize() {
         todayHabitsList.setItems(todayHabits);
-        todayHabitsList.setCellFactory(list -> new HabitCell(habitService, () -> loggedInUserId));
+        todayHabitsList.setCellFactory(list -> new HabitCell(habitService, () -> loggedInUserId, this::lastDoneText));
         habitService.attachObserver(this);
     }
 
     @Override
     public void onHabitsChanged() {
+        todayHabitsList.refresh();
         updateWeeklyProgress();
+    }
+
+    private String lastDoneText(Habit habit) {
+        LocalDate lastDone = habitService.getLastCompletionDate(loggedInUserId, habit.getId());
+        return LastDoneText.describe(lastDone, LocalDate.now());
     }
 
     public void setUser(User user) {

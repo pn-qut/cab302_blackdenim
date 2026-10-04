@@ -125,6 +125,11 @@
     -fx-font-weight: bold;
 }
 
+.habit-detail {
+    -fx-font-size: 12px;
+    -fx-text-fill: -text-muted;
+}
+
 .habit-row.done .habit-name {
     -fx-text-fill: -text-muted;
 }

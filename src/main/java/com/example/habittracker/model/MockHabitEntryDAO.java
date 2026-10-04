@@ -65,6 +65,21 @@ public class MockHabitEntryDAO implements IHabitEntryDAO {
         return counts;
     }
 
+    /**
+     * Gets the most recent date a user completed a habit, or null if never completed.
+     */
+    @Override
+    public LocalDate getLastCompletionDate(int userId, int habitId) {
+        LocalDate lastDate = null;
+        for (Entry entry : entries) {
+            boolean isMatch = entry.userId == userId && entry.habitId == habitId;
+            if (isMatch && (lastDate == null || entry.date.isAfter(lastDate))) {
+                lastDate = entry.date;
+            }
+        }
+        return lastDate;
+    }
+
     private static class Entry {
         private final int userId;
         private final int habitId;
