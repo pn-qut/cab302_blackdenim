@@ -44,8 +44,8 @@
         </VBox>
 
         <VBox spacing="12"
-              prefWidth="260"
-              minWidth="220"
+              prefWidth="320"
+              minWidth="280"
               styleClass="card">
             <Label text="This week's progress"
                    styleClass="card-title"/>

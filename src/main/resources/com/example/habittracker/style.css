@@ -116,6 +116,10 @@
     -fx-border-color: transparent transparent -border transparent;
 }
 
+.list-cell:empty {
+    -fx-border-color: transparent;
+}
+
 .habit-name {
     -fx-font-size: 15px;
     -fx-font-weight: bold;

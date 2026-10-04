@@ -16,6 +16,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 import java.time.LocalDate;
@@ -87,6 +88,7 @@ public class TodayHabitController implements HabitObserver {
         HBox.setHgrow(bar, Priority.ALWAYS);
 
         Label countLabel = new Label(progress.getCompletedDays() + "/" + progress.getTargetDays());
+        countLabel.setMinWidth(Region.USE_PREF_SIZE);
 
         HBox row = new HBox(8, nameLabel, bar, countLabel);
         row.setAlignment(Pos.CENTER_LEFT);
