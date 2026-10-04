@@ -204,4 +204,35 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
         return score;
     }
 
+    @Override
+    public List<LeaderboardEntry> getMonthlyLeaderboard(int month, int year) {
+        List<LeaderboardEntry> leaderboard = new ArrayList<>();
+
+        try{
+            String query = "SELECT users.username, COUNT(habit_entries.habit_id) AS score "
+                    + "FROM users "
+                    + "LEFT JOIN habit_entries "
+                    + "ON users.user_id = habit_entries.user_id "
+                    + "AND strftime('%m', completion_date) = ? "
+                    + "AND strftime('%Y', completion_date) = ? "
+                    + "GROUP BY users.user_id, users.username "
+                    + "ORDER BY score DESC";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1, String.format("%02d", month));
+            statement.setString(2, String.valueOf(year));
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String username = resultSet.getString("username");
+                int score = resultSet.getInt("score");
+                leaderboard.add(new LeaderboardEntry(username, score));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return leaderboard;
+    }
+
 }

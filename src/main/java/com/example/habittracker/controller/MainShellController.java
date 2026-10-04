@@ -37,9 +37,7 @@ public class MainShellController {
     }
 
     @FXML
-    private void LeaderboardBar() {
-        contentArea.getChildren().setAll(new Label("Leaderboard page is coming soon!"));
-    }
+    private void LeaderboardBar() { loadPage("leaderboard.fxml");}
 
     @FXML
     private void AchievementsBar() {
