@@ -18,8 +18,11 @@ public interface IHabitEntryDAO {
     List<Integer> getCompletedHabitIds(int userId, LocalDate date);
 
     // Get all the dates (from most recent to least recent) that a user has completed a given habit
-    public List<LocalDate> getCompletionDates(int userId, int habitId);
+    List<LocalDate> getCompletionDates(int userId, int habitId);
 
     // Get a user's streak length for completing a given habit
-    public int getCurrentStreak(int userId, int habitId);
+    int getCurrentStreak(int userId, int habitId);
+
+    // Get a users total score for a given month, where one point is given for each completed habit
+    int getUserMonthlyScore(int userId, int month, int year);
 }

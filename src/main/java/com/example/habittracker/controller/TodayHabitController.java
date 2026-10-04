@@ -21,8 +21,11 @@ import javafx.scene.layout.Region;
 import java.time.LocalDate;
 
 public class TodayHabitController {
+
     @FXML
     private ListView<Habit> todayList;
+    @FXML
+    private Label scoreLabel;
 
     private Runnable onSeeAllHabitsAction;
 
@@ -45,6 +48,13 @@ public class TodayHabitController {
     public void setUser(User user) {
         loggedInUserId = user.getId();
         todayHabits.setAll(userHabitDAO.getUserHabits(loggedInUserId));
+        updateScore();
+    }
+
+    private void updateScore() {
+        LocalDate today = LocalDate.now();
+        int score = habitEntryDAO.getUserMonthlyScore(loggedInUserId, today.getMonthValue(), today.getYear());
+        scoreLabel.setText("Score: " + score);
     }
 
     public void setOnSeeAllHabits(Runnable action) {
@@ -81,6 +91,9 @@ public class TodayHabitController {
                 } else {
                     habitEntryDAO.uncompleteHabit(loggedInUserId, habit.getId(), today);
                 }
+
+                updateScore();
+                todayList.refresh();
             });
         }
 
