@@ -40,3 +40,6 @@ build/
 
 ### SQLite ###
 *.db
+
+### Documentation - Javadocs ###
+docs/
