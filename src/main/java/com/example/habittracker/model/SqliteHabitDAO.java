@@ -37,10 +37,7 @@ public class SqliteHabitDAO implements IHabitDAO{
             );
 
             String[] habits = {
-                    "Drink water",
-                    "Exercise",
-                    "Read",
-                    "Meditate"
+                    "Swap single use plastics with reusables", "Reduce food waste", "Use public transport", "Compost organic waste", "Adopt meal planning", "Keep shower times short"
             };
 
             for (String habit : habits) {
