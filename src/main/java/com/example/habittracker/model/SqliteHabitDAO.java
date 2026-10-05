@@ -72,7 +72,19 @@ public class SqliteHabitDAO implements IHabitDAO{
     }
 
     @Override
-    public Habit findHabitById(int id) {
-        return null;
+public Habit findHabitById(int id) {
+    String query = "SELECT habit_id, name FROM habits WHERE habit_id = ?";
+    try (PreparedStatement statement = connection.prepareStatement(query)) {
+        statement.setInt(1, id);
+        try (ResultSet rs = statement.executeQuery()) {
+            if (rs.next()) {
+                return new Habit(rs.getInt("habit_id"), rs.getString("name"));
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+    return null;
 }
+    }
+
