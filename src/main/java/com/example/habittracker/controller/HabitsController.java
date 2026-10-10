@@ -7,23 +7,18 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class HabitsController {
 
-    private IHabitDAO habitDAO;
-    private IUserHabitDAO userSelectedHabitsDAO;
-    private IHabitEntryDAO habitEntryDAO;
+    private final IHabitDAO habitDAO = DAOFactory.getHabitDAO();
+    private final HabitService habitService = DAOFactory.createHabitService();
 
     private int loggedInUserId;
 
@@ -42,12 +37,8 @@ public class HabitsController {
 
     @FXML
     public void initialize() {
-        habitDAO = new SqliteHabitDAO();
-        userSelectedHabitsDAO = new SqliteUserSelectedHabitsDAO();
-        habitEntryDAO = new SqliteHabitEntryDAO();
-
         currentHabitsList.setItems(currentHabits);
-        currentHabitsList.setCellFactory(list -> new HabitCell());
+        currentHabitsList.setCellFactory(list -> new HabitCell(habitService, () -> loggedInUserId));
 
         currentHabits.addListener((javafx.collections.ListChangeListener<Habit>) change -> updateHabitsCount());
 
@@ -56,7 +47,7 @@ public class HabitsController {
 
     public void setUser(User user) {
         loggedInUserId = user.getId();
-        currentHabits.setAll(userSelectedHabitsDAO.getUserHabits(loggedInUserId));
+        currentHabits.setAll(habitService.getUserHabits(loggedInUserId));
         buildPremadeHabits(habitDAO.getAllHabits());
     }
 
@@ -95,11 +86,11 @@ public class HabitsController {
 
         addButton.setOnAction(e -> {
             if (isCurrentHabit(habit.getName())) {
-                userSelectedHabitsDAO.removeHabitFromUser(loggedInUserId, habit.getId());
+                habitService.removeHabitFromUser(loggedInUserId, habit.getId());
                 currentHabits.removeIf(h -> h.getName().equals(habit.getName()));
                 addButton.setText("Add");
             } else {
-                userSelectedHabitsDAO.addHabitToUser(loggedInUserId, habit.getId());
+                habitService.addHabitToUser(loggedInUserId, habit.getId());
                 currentHabits.add(habit);
                 addButton.setText("Remove");
             }
@@ -111,40 +102,5 @@ public class HabitsController {
 
     private boolean isCurrentHabit(String habitName) {
         return currentHabits.stream().anyMatch(h -> h.getName().equals(habitName));
-    }
-
-    private class HabitCell extends ListCell<Habit> {
-        private final CheckBox checkBox = new CheckBox();
-        private final Label nameLabel = new Label();
-        private final HBox root = new HBox(10, checkBox, nameLabel);
-
-        HabitCell() {
-            root.setAlignment(Pos.CENTER_LEFT);
-            checkBox.setOnAction(e -> {
-                Habit habit = getItem();
-                if (habit == null) {
-                    return;
-                }
-                LocalDate today = LocalDate.now();
-                if (checkBox.isSelected()) {
-                    habitEntryDAO.completeHabit(loggedInUserId, habit.getId(), today);
-                } else {
-                    habitEntryDAO.uncompleteHabit(loggedInUserId, habit.getId(), today);
-                }
-            });
-        }
-
-        @Override
-        protected void updateItem(Habit habit, boolean empty) {
-            super.updateItem(habit, empty);
-
-            if (empty || habit == null) {
-                setGraphic(null);
-            } else {
-                nameLabel.setText(habit.getName());
-                checkBox.setSelected(habitEntryDAO.isHabitCompleted(loggedInUserId, habit.getId(), LocalDate.now()));
-                setGraphic(root);
-            }
-        }
     }
 }
