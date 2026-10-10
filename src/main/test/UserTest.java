@@ -9,7 +9,7 @@ public class UserTest {
 
     @BeforeEach
     public void setUp() {
-        user = new User("Jerry", "Password12");
+        user = new User("Jerry", "Password12", 4000);
     }
 
     @Test
@@ -27,6 +27,18 @@ public class UserTest {
     public void testGetPassword() {
         assertEquals("Password12", user.getPassword());
     }
+
+    @Test
+    public void testGetPostcode() {
+        assertEquals(4000, user.getPostcode());
+    }
+
+    @Test
+    public void testSetPostcode() {
+        user.setPostcode(4100);
+        assertEquals(4100, user.getPostcode());
+    }
+
     @Test
     public void testSetPassword() {
         user.setPassword("Password25");

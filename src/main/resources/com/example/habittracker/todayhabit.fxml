@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -30,12 +31,41 @@
                text="Score: 0"
                styleClass="score-label"/>
     </HBox>
+    <VBox styleClass="header">
+        <Label fx:id="dateLabel"
+               styleClass="date-label"/>
+        <Label fx:id="greetingLabel"
+               styleClass="page-title"/>
+    </VBox>
 
-    <ListView fx:id="todayList"
-              VBox.vgrow="ALWAYS"/>
+    <HBox spacing="24"
+          VBox.vgrow="ALWAYS">
 
-    <Button text="+ Add a habit"
-            onAction="#onSeeAllHabits"
-            maxWidth="Infinity"/>
+        <VBox spacing="12"
+              HBox.hgrow="ALWAYS"
+              styleClass="card">
+            <Label text="Today's habits"
+                   styleClass="card-title"/>
+
+            <ListView fx:id="todayHabitsList"
+                      VBox.vgrow="ALWAYS"/>
+
+            <Button text="+ Add a habit"
+                    onAction="#onAddHabitClicked"
+                    maxWidth="Infinity"/>
+        </VBox>
+
+        <VBox spacing="12"
+              prefWidth="320"
+              minWidth="280"
+              styleClass="card">
+            <Label text="This week's progress"
+                   styleClass="card-title"/>
+
+            <VBox fx:id="weeklyProgressBox"
+                  spacing="10"/>
+        </VBox>
+
+    </HBox>
 
 </VBox>

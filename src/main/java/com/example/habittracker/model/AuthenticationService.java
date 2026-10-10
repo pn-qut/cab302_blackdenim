@@ -1,5 +1,6 @@
 package com.example.habittracker.model;
 
+import java.util.List;
 
 public class AuthenticationService implements IAuthenticationService {
 
@@ -14,11 +15,12 @@ public class AuthenticationService implements IAuthenticationService {
      * @param username The username of the user.
      * @param password The password of the user.
      */
-    public void register (String username, String password) {
+    public void register (String username, String password, int postcode) {
         validateUsername(username);
         validatePassword(password);
+        validatePostcode(postcode);
 
-        User user = new User(username, password);
+        User user = new User(username, password, postcode);
         userDAO.addUser(user);
     }
 
@@ -45,6 +47,22 @@ public class AuthenticationService implements IAuthenticationService {
         }
 
         return user;
+    }
+
+    @Override
+    public List<String> getSuburbsByPostcode(int postcode) {
+        return userDAO.findSuburbsByPostcode(postcode);
+    }
+
+    private void validatePostcode(int postcode) {
+
+        if (postcode < 4000 || postcode > 4999) {
+            throw new IllegalArgumentException("Postcode must be between 4000 and 4999");
+        }
+        if (userDAO.findSuburbsByPostcode(postcode).isEmpty()) {
+            throw new IllegalArgumentException("Postcode was not found.");
+        }
+
     }
 
     /**

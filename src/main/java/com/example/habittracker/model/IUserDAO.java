@@ -1,5 +1,7 @@
 package com.example.habittracker.model;
 
+import java.util.List;
+
 /**
  * Interface for the User Data Access Object that handles
  * the operations for the User class with the database.
@@ -17,6 +19,12 @@ public interface IUserDAO {
      * @param username The username to be searched for in the database.
      */
     public boolean usernameExists(String username);
+
+    /**
+     * Retrieves the suburbs associated with a postcode.
+     * @param postcode The postcode to search for.
+     */
+    public List<String> findSuburbsByPostcode(int postcode);
 
     /**
      * Adds a new user to the database.

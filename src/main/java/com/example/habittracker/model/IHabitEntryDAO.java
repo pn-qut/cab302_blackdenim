@@ -2,6 +2,7 @@ package com.example.habittracker.model;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public interface IHabitEntryDAO {
 
@@ -28,4 +29,9 @@ public interface IHabitEntryDAO {
 
     // Get a list of leaderboard entries for a given month, ranked from highest to lowest score
     List<LeaderboardEntry> getMonthlyLeaderboard(int month, int year);
+    // Get how many days each habit was completed between two dates (inclusive), keyed by habit id
+    Map<Integer, Integer> countCompletionsByHabit(int userId, LocalDate from, LocalDate to);
+
+    // Get the most recent date a user completed a habit, or null if never completed
+    LocalDate getLastCompletionDate(int userId, int habitId);
 }

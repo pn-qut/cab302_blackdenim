@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SqliteHabitEntryDAO implements IHabitEntryDAO {
     private Connection connection;
@@ -127,6 +129,15 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
                     + "WHERE user_id = ? "
                     + "AND habit_id = ?"
                     + "ORDER BY completion_date DESC";
+    public Map<Integer, Integer> countCompletionsByHabit(int userId, LocalDate from, LocalDate to) {
+        Map<Integer, Integer> counts = new HashMap<>();
+
+        try {
+            String query = "SELECT habit_id, COUNT(*) AS completions "
+                    + "FROM habit_entries "
+                    + "WHERE user_id = ? "
+                    + "AND completion_date BETWEEN ? AND ? "
+                    + "GROUP BY habit_id";
 
             PreparedStatement statement = connection.prepareStatement(query);
 
@@ -137,6 +148,12 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
             while (resultSet.next()) {
                 LocalDate completionDate = LocalDate.parse(resultSet.getString("completion_date"));
                 dates.add(completionDate);
+            statement.setString(2, from.toString());
+            statement.setString(3, to.toString());
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                counts.put(resultSet.getInt("habit_id"), resultSet.getInt("completions"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -187,6 +204,16 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
                     + "WHERE user_id = ? "
                     + "AND strftime('%m', completion_date) = ? "
                     + "AND strftime('%Y', completion_date) = ?";
+        return counts;
+    }
+
+    @Override
+    public LocalDate getLastCompletionDate(int userId, int habitId) {
+        try {
+            String query = "SELECT MAX(completion_date) AS last_date "
+                    + "FROM habit_entries "
+                    + "WHERE user_id = ? "
+                    + "AND habit_id = ?";
 
             PreparedStatement statement = connection.prepareStatement(query);
 
@@ -228,6 +255,11 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
                 String username = resultSet.getString("username");
                 int score = resultSet.getInt("score");
                 leaderboard.add(new LeaderboardEntry(username, score));
+            statement.setInt(2, habitId);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next() && resultSet.getString("last_date") != null) {
+                return LocalDate.parse(resultSet.getString("last_date"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -235,4 +267,6 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
         return leaderboard;
     }
 
+        return null;
+    }
 }
