@@ -6,6 +6,8 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.habittracker.controller.TodayHabitController"
@@ -19,6 +21,16 @@
                 left="50"/>
     </padding>
 
+    <HBox alignment="CENTER_LEFT">
+        <Label text="Today's habits"
+               styleClass="page-title"/>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <Label fx:id="scoreLabel"
+               text="Score: 0"
+               styleClass="score-label"/>
+    </HBox>
     <VBox styleClass="header">
         <Label fx:id="dateLabel"
                styleClass="date-label"/>

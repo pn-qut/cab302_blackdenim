@@ -73,6 +73,7 @@ public class MainShellController {
     }
 
     @FXML
+    private void LeaderboardBar() { loadPage("leaderboard.fxml");}
     private void onLeaderboardClicked() {
         showComingSoon(leaderboardButton, "Leaderboard page");
     }

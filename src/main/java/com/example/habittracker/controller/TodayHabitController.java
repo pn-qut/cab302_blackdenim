@@ -34,6 +34,12 @@ public class TodayHabitController implements HabitObserver {
     @FXML
     private Label greetingLabel;
 
+public class TodayHabitController {
+
+    @FXML
+    private ListView<Habit> todayList;
+    @FXML
+    private Label scoreLabel;
     @FXML
     private ListView<Habit> todayHabitsList;
 
@@ -68,6 +74,14 @@ public class TodayHabitController implements HabitObserver {
 
     public void setUser(User user) {
         loggedInUserId = user.getId();
+        todayHabits.setAll(userHabitDAO.getUserHabits(loggedInUserId));
+        updateScore();
+    }
+
+    private void updateScore() {
+        LocalDate today = LocalDate.now();
+        int score = habitEntryDAO.getUserMonthlyScore(loggedInUserId, today.getMonthValue(), today.getYear());
+        scoreLabel.setText("Score: " + score);
         todayHabits.setAll(habitService.getUserHabits(loggedInUserId));
         updateHeader(user);
         updateWeeklyProgress();
@@ -85,6 +99,54 @@ public class TodayHabitController implements HabitObserver {
         }
     }
 
+    private class HabitCell extends ListCell<Habit> {
+        private final CheckBox checkBox = new CheckBox();
+        private final Label nameLabel = new Label();
+        private final Label streakLabel = new Label();
+        private final Region spacer = new Region();
+        private final HBox root = new HBox(10, checkBox, nameLabel, spacer, streakLabel);
+
+        HabitCell() {
+            root.setAlignment(Pos.CENTER_LEFT);
+
+            HBox.setHgrow(spacer, Priority.ALWAYS);
+
+            checkBox.setOnAction(e -> {
+                Habit habit = getItem();
+                if (habit == null) {
+                    return;
+                }
+                LocalDate today = LocalDate.now();
+                if (checkBox.isSelected()) {
+                    habitEntryDAO.completeHabit(loggedInUserId, habit.getId(), today);
+                } else {
+                    habitEntryDAO.uncompleteHabit(loggedInUserId, habit.getId(), today);
+                }
+
+                updateScore();
+                todayList.refresh();
+            });
+        }
+
+        @Override
+        protected void updateItem(Habit habit, boolean empty) {
+            super.updateItem(habit, empty);
+
+            if (empty || habit == null) {
+                setGraphic(null);
+            } else {
+                nameLabel.setText(habit.getName());
+
+                LocalDate today = LocalDate.now();
+                boolean completed = habitEntryDAO.isHabitCompleted(loggedInUserId, habit.getId(), today);
+
+                checkBox.setSelected(completed);
+
+                int streak = habitEntryDAO.getCurrentStreak(loggedInUserId, habit.getId());
+                streakLabel.setText(streak + " day streak");
+
+                setGraphic(root);
+            }
     private HBox createProgressRow(HabitProgress progress) {
         Label nameLabel = new Label(progress.getHabit().getName());
         nameLabel.setMinWidth(PROGRESS_NAME_WIDTH);
