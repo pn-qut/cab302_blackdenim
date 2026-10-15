@@ -35,6 +35,9 @@ public class TodayHabitController implements HabitObserver {
     private Label greetingLabel;
 
     @FXML
+    private Label scoreLabel;
+
+    @FXML
     private ListView<Habit> todayHabitsList;
 
     @FXML
@@ -59,6 +62,7 @@ public class TodayHabitController implements HabitObserver {
     public void onHabitsChanged() {
         todayHabitsList.refresh();
         updateWeeklyProgress();
+        updateScore();
     }
 
     private String lastDoneText(Habit habit) {
@@ -71,6 +75,13 @@ public class TodayHabitController implements HabitObserver {
         todayHabits.setAll(habitService.getUserHabits(loggedInUserId));
         updateHeader(user);
         updateWeeklyProgress();
+        updateScore();
+    }
+
+    private void updateScore() {
+        LocalDate today = LocalDate.now();
+        int score = habitService.getUserMonthlyScore(loggedInUserId, today.getMonthValue(), today.getYear());
+        scoreLabel.setText("Score: " + score);
     }
 
     private void updateHeader(User user) {

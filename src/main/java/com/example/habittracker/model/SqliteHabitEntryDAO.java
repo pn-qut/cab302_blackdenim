@@ -179,6 +179,33 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
         return streak;
     }
 
+    @Override
+    public int getUserMonthlyScore(int userId, int month, int year) {
+        int score = 0;
+
+        try{
+            String query = "SELECT COUNT(*) "
+                    + "FROM habit_entries "
+                    + "WHERE user_id = ? "
+                    + "AND strftime('%m', completion_date) = ? "
+                    + "AND strftime('%Y', completion_date) = ?";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setInt(1, userId);
+            statement.setString(2, String.format("%02d", month));
+            statement.setString(3, String.valueOf(year));
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                score = resultSet.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return score;
+    }
+
 
     @Override
     public Map<Integer, Integer> countCompletionsByHabit(int userId, LocalDate from, LocalDate to) {

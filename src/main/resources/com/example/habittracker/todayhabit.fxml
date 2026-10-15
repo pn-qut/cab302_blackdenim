@@ -35,6 +35,10 @@
             <Label text="Today's habits"
                    styleClass="card-title"/>
 
+            <Label fx:id="scoreLabel"
+                   text="Score: 0"
+                   styleClass="score-label"/>
+
             <ListView fx:id="todayHabitsList"
                       VBox.vgrow="ALWAYS"/>
 

@@ -60,6 +60,11 @@ public class MockHabitEntryDAO implements IHabitEntryDAO {
         return 6;
     }
 
+    @Override
+    public int getUserMonthlyScore(int userId, int month, int year) {
+        return 42;
+    }
+
     /**
      * Gets how many days each habit was completed by a user between two dates (inclusive).
      */

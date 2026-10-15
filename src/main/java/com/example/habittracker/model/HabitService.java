@@ -111,6 +111,13 @@ public class HabitService {
     }
 
     /**
+     * Wrapper for private entry DAO function to return user's monthly score.
+     */
+    public int getUserMonthlyScore(int userId, int month, int year) {
+        return entryDAO.getUserMonthlyScore(userId, month, year);
+    }
+
+    /**
      * Gets the Monday of the week that a date falls in.
      */
     private static LocalDate startOfWeek(LocalDate date) {
