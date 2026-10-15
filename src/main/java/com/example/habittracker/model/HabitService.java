@@ -106,6 +106,10 @@ public class HabitService {
         return progress;
     }
 
+    public int getCurrentStreak(int userId, int habitId){
+        return entryDAO.getCurrentStreak(userId, habitId);
+    }
+
     /**
      * Gets the Monday of the week that a date falls in.
      */
