@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="12" maxWidth="400" xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.habittracker.controller.ProfileController">
+    <padding>
+        <Insets top="24" right="24" bottom="24" left="24"/>
+    </padding>
+    <Label text="Profile" style="-fx-font-size: 20px;"/>
+    <Label text="Username"/>
+    <Label fx:id="usernameLabel"/>
+    <Label text="Change password"/>
+    <PasswordField fx:id="currentPasswordField" promptText="Current password"/>
+    <PasswordField fx:id="newPasswordField" promptText="New password"/>
+    <PasswordField fx:id="confirmPasswordField" promptText="Confirm new password"/>
+    <Button text="Save password" onAction="#onChangePasswordClicked"/>
+    <Label fx:id="messageLabel" wrapText="true"/>
+    <Button text="Log out" onAction="#onLogoutClicked"/>
+</VBox>
