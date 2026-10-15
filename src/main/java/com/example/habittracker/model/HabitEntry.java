@@ -3,7 +3,6 @@ package com.example.habittracker.model;
 import java.time.LocalDate;
 
 public class HabitEntry {
-    // id, username, habit_id, date, completed
     private int id;
     private String username;
     private int habit_id;

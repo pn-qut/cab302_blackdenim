@@ -65,6 +65,11 @@ public class MockHabitEntryDAO implements IHabitEntryDAO {
         return 42;
     }
 
+    @Override
+    public List<LeaderboardEntry> getMonthlyLeaderboard(int month, int year) {
+        return List.of();
+    }
+
     /**
      * Gets how many days each habit was completed by a user between two dates (inclusive).
      */

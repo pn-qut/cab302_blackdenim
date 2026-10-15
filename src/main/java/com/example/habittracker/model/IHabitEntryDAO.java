@@ -27,6 +27,9 @@ public interface IHabitEntryDAO {
     // Get a users total score for a given month, where one point is given for each completed habit
     int getUserMonthlyScore(int userId, int month, int year);
 
+    // Get a list of leaderboard entries for a given month, ranked from highest to lowest score
+    List<LeaderboardEntry> getMonthlyLeaderboard(int month, int year);
+
     // Get how many days each habit was completed between two dates (inclusive), keyed by habit id
     Map<Integer, Integer> countCompletionsByHabit(int userId, LocalDate from, LocalDate to);
 
