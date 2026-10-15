@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MockUserDAO implements IUserDAO{
+public class MockUserDAO implements IUserDAO {
     private final List<User> users = new ArrayList<>();
 
     /**
      * Retrieves a user from the user list, searching by username.
+     * 
      * @param username The username of the user to be retrieved.
      */
     @Override
@@ -21,6 +22,7 @@ public class MockUserDAO implements IUserDAO{
 
     /**
      * Checks if a username exists in the users list.
+     * 
      * @param username The username to be searched for in the users list.
      */
     @Override
@@ -38,11 +40,20 @@ public class MockUserDAO implements IUserDAO{
 
     /**
      * Adds a new user to the users list.
+     * 
      * @param user The user to add to the users list.
      */
     @Override
     public void addUser(User user) {
         users.add(user);
+    }
+
+    @Override
+    public void updatePassword(String username, String newPassword) {
+        User existing = findByUsername(username);
+        if (existing != null) {
+            existing.setPassword(newPassword);
+        }
     }
 
 }
