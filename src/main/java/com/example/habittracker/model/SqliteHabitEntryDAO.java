@@ -65,7 +65,7 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
     public void completeHabit(int userId, int habitId, LocalDate date) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO habit_entries (user_id, habit_id, completion_date) VALUES (?, ?, ?)"
+                    "INSERT OR IGNORE INTO habit_entries (user_id, habit_id, completion_date) VALUES (?, ?, ?)"
             );
             statement.setInt(1, userId);
             statement.setInt(2, habitId);
@@ -120,6 +120,94 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
     }
 
     @Override
+    public List<LocalDate> getCompletionDates(int userId, int habitId){
+        List<LocalDate> dates = new ArrayList<>();
+
+        try{
+            String query = "SELECT completion_date "
+                    + "FROM habit_entries "
+                    + "WHERE user_id = ? "
+                    + "AND habit_id = ?"
+                    + "ORDER BY completion_date DESC";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setInt(1, userId);
+            statement.setInt(2, habitId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                LocalDate completionDate = LocalDate.parse(resultSet.getString("completion_date"));
+                dates.add(completionDate);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dates;
+    }
+
+    @Override
+    public int getCurrentStreak(int userId, int habitId) {
+        List<LocalDate> dates = getCompletionDates(userId, habitId);
+
+        if (dates.isEmpty()) {
+            return 0;
+        }
+
+        LocalDate today = LocalDate.now();
+        LocalDate expectedDate;
+
+        if (isHabitCompleted(userId, habitId, today)){
+            expectedDate = today;
+        } else {
+            // If the habit hasn't been completed today, the streak will continue from yesterday
+            expectedDate = today.minusDays(1);
+        }
+
+        int streak = 0;
+
+        // Calculate the length of the streak
+        for (LocalDate date: dates) {
+            if (date.equals(expectedDate)) {
+                streak++;
+                expectedDate = expectedDate.minusDays(1);
+            } else if (date.isBefore(expectedDate)) {
+                break;
+            }
+        }
+
+        return streak;
+    }
+
+    @Override
+    public int getUserMonthlyScore(int userId, int month, int year) {
+        int score = 0;
+
+        try{
+            String query = "SELECT COUNT(*) "
+                    + "FROM habit_entries "
+                    + "WHERE user_id = ? "
+                    + "AND strftime('%m', completion_date) = ? "
+                    + "AND strftime('%Y', completion_date) = ?";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setInt(1, userId);
+            statement.setString(2, String.format("%02d", month));
+            statement.setString(3, String.valueOf(year));
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                score = resultSet.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return score;
+    }
+
+
+    @Override
     public Map<Integer, Integer> countCompletionsByHabit(int userId, LocalDate from, LocalDate to) {
         Map<Integer, Integer> counts = new HashMap<>();
 
@@ -168,4 +256,36 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
         }
         return null;
     }
+
+    @Override
+    public List<LeaderboardEntry> getMonthlyLeaderboard(int month, int year) {
+        List<LeaderboardEntry> leaderboard = new ArrayList<>();
+
+        try{
+            String query = "SELECT users.username, COUNT(habit_entries.habit_id) AS score "
+                    + "FROM users "
+                    + "LEFT JOIN habit_entries "
+                    + "ON users.user_id = habit_entries.user_id "
+                    + "AND strftime('%m', completion_date) = ? "
+                    + "AND strftime('%Y', completion_date) = ? "
+                    + "GROUP BY users.user_id, users.username "
+                    + "ORDER BY score DESC";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1, String.format("%02d", month));
+            statement.setString(2, String.valueOf(year));
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String username = resultSet.getString("username");
+                int score = resultSet.getInt("score");
+                leaderboard.add(new LeaderboardEntry(username, score));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return leaderboard;
+    }
+
 }

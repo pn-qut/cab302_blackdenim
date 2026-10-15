@@ -50,6 +50,26 @@ public class MockHabitEntryDAO implements IHabitEntryDAO {
         return habitIds;
     }
 
+    @Override
+    public List<LocalDate> getCompletionDates(int userId, int habitId) {
+        return List.of();
+    }
+
+    @Override
+    public int getCurrentStreak(int userId, int habitId) {
+        return 6;
+    }
+
+    @Override
+    public int getUserMonthlyScore(int userId, int month, int year) {
+        return 42;
+    }
+
+    @Override
+    public List<LeaderboardEntry> getMonthlyLeaderboard(int month, int year) {
+        return List.of();
+    }
+
     /**
      * Gets how many days each habit was completed by a user between two dates (inclusive).
      */
