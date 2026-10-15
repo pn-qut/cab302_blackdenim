@@ -164,4 +164,51 @@ public class AuthenticationServiceTest {
             authenticationService.login( "Alice", "Password12");
         });
     }
+    @Test
+    public void ChangePasswordWithValidDetailsAllowsLoginWithNewPassword() {
+        authenticationService.changePassword("Alice", "Testpw12", "Newpass34");
+        User user = authenticationService.login("Alice", "Newpass34");
+
+        assertEquals("Alice", user.getUsername());
+        assertEquals("Newpass34", user.getPassword());
+    }
+
+    @Test
+    public void ChangePasswordThenLoginWithOldPasswordThrowsException() {
+        authenticationService.changePassword("Alice", "Testpw12", "Newpass34");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.login("Alice", "Testpw12");
+        });
+    }
+
+    @Test
+    public void ChangePasswordWithIncorrectCurrentPasswordThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.changePassword("Alice", "Wrongpw12", "Newpass34");
+        });
+        // The original password must still work after a failed change
+        assertEquals("Testpw12", authenticationService.login("Alice", "Testpw12").getPassword());
+    }
+
+    @Test
+    public void ChangePasswordForUnregisteredUserThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.changePassword("Borris", "Testpw12", "Newpass34");
+        });
+    }
+
+    @Test
+    public void ChangePasswordToPasswordWithoutNumberThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.changePassword("Alice", "Testpw12", "Password");
+        });
+    }
+
+    @Test
+    public void ChangePasswordToSamePasswordThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.changePassword("Alice", "Testpw12", "Testpw12");
+        });
+    }
 }
