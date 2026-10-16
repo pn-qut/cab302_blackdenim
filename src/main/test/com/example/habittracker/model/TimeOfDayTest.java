@@ -1,4 +1,5 @@
-import com.example.habittracker.model.TimeOfDay;
+package com.example.habittracker.model;
+
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;

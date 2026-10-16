@@ -1,3 +1,5 @@
+package com.example.habittracker.model;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -6,13 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.example.habittracker.model.Habit;
-import com.example.habittracker.model.HabitService;
-import com.example.habittracker.model.IHabitEntryDAO;
-import com.example.habittracker.model.IUserHabitDAO;
-import com.example.habittracker.model.LastDoneText;
-import com.example.habittracker.model.MockHabitEntryDAO;
-import com.example.habittracker.model.MockUserHabitDAO;
 
 public class LastDoneTest {
     private static final int USER_ID = 1;

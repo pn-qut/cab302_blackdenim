@@ -1,4 +1,5 @@
-import com.example.habittracker.model.*;
+package com.example.habittracker.model;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
