@@ -106,6 +106,17 @@ public class HabitService {
         return progress;
     }
 
+    public int getCurrentStreak(int userId, int habitId){
+        return entryDAO.getCurrentStreak(userId, habitId);
+    }
+
+    /**
+     * Wrapper for private entry DAO function to return user's monthly score.
+     */
+    public int getUserMonthlyScore(int userId, int month, int year) {
+        return entryDAO.getUserMonthlyScore(userId, month, year);
+    }
+
     /**
      * Gets the Monday of the week that a date falls in.
      */
