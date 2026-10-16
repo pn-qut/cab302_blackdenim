@@ -26,7 +26,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    public void RegisterAndLoginWithValidUsernameAndPassword(){
+    public void RegisterAndLoginWithValidUsernameAndPassword() {
         authenticationService.register("Sam", "Testjh14", 4000);
         User user = authenticationService.login("Sam", "Testjh14");
 
@@ -58,110 +58,158 @@ public class AuthenticationServiceTest {
     @Test
     public void RegisterWithPasswordLessThan8CharsThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "Tom", "Passw1", 4000 );
+            authenticationService.register("Tom", "Passw1", 4000);
         });
     }
 
     @Test
     public void RegisterWithPasswordWithoutUppercaseCharThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "Tom", "password1", 4000 );
+            authenticationService.register("Tom", "password1", 4000);
         });
     }
 
     @Test
     public void RegisterWithPasswordWithoutLowercaseCharThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "Tom", "PASSWORD1", 4000 );
+            authenticationService.register("Tom", "PASSWORD1", 4000);
         });
     }
 
     @Test
     public void RegisterWithPasswordWithoutNumberThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "Tom", "Password", 4000 );
+            authenticationService.register("Tom", "Password", 4000);
         });
     }
 
     @Test
     public void RegisterWithNullOrEmptyPasswordThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "Tom", "", 4000);
+            authenticationService.register("Tom", "", 4000);
         });
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "Tom", null, 4000);
+            authenticationService.register("Tom", null, 4000);
         });
     }
 
     @Test
     public void RegisterWithNullOrEmptyUsernameThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( null, "Password12", 4000);
+            authenticationService.register(null, "Password12", 4000);
         });
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "", "Password12", 4000);
+            authenticationService.register("", "Password12", 4000);
         });
     }
 
     @Test
     public void RegisterWithUsernameTooLongThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "asdfghjklasdfghjklasd", "Password12", 4000);
+            authenticationService.register("asdfghjklasdfghjklasd", "Password12", 4000);
         });
     }
 
     @Test
     public void RegisterWithPasswordTooLongThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "Tom", "Asdfghjklasdfghjkla12", 4000);
+            authenticationService.register("Tom", "Asdfghjklasdfghjkla12", 4000);
         });
     }
 
     @Test
     public void RegisterWithUsernameContainingSpaceThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "T om", "Password12", 4000);
+            authenticationService.register("T om", "Password12", 4000);
         });
     }
 
     @Test
     public void RegisterWithPasswordContainingSpaceThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.register( "Tom", "Passw ord12", 4000);
+            authenticationService.register("Tom", "Passw ord12", 4000);
         });
     }
 
     @Test
     public void LoginWithNullOrEmptyPasswordThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.login( "Tom", null);
+            authenticationService.login("Tom", null);
         });
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.login( "Tom", "");
+            authenticationService.login("Tom", "");
         });
     }
 
     @Test
     public void LoginWithNullOrEmptyUsernameThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.login( null, "Password12");
+            authenticationService.login(null, "Password12");
         });
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.login( "", "Password12");
+            authenticationService.login("", "Password12");
         });
     }
 
     @Test
     public void LoginWithUnregisteredUsernameThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.login( "Borris", "Password12");
+            authenticationService.login("Borris", "Password12");
         });
     }
 
     @Test
     public void LoginWithIncorrectPasswordThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            authenticationService.login( "Alice", "Password12");
+            authenticationService.login("Alice", "Password12");
+        });
+    }
+
+    @Test
+    public void ChangePasswordWithValidDetailsAllowsLoginWithNewPassword() {
+        authenticationService.changePassword("Alice", "Testpw12", "Newpass34");
+        User user = authenticationService.login("Alice", "Newpass34");
+
+        assertEquals("Alice", user.getUsername());
+        assertEquals("Newpass34", user.getPassword());
+    }
+
+    @Test
+    public void ChangePasswordThenLoginWithOldPasswordThrowsException() {
+        authenticationService.changePassword("Alice", "Testpw12", "Newpass34");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.login("Alice", "Testpw12");
+        });
+    }
+
+    @Test
+    public void ChangePasswordWithIncorrectCurrentPasswordThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.changePassword("Alice", "Wrongpw12", "Newpass34");
+        });
+        // The original password must still work after a failed change
+        assertEquals("Testpw12", authenticationService.login("Alice", "Testpw12").getPassword());
+    }
+
+    @Test
+    public void ChangePasswordForUnregisteredUserThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.changePassword("Borris", "Testpw12", "Newpass34");
+        });
+    }
+
+    @Test
+    public void ChangePasswordToPasswordWithoutNumberThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.changePassword("Alice", "Testpw12", "Password");
+        });
+    }
+
+    @Test
+    public void ChangePasswordToSamePasswordThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            authenticationService.changePassword("Alice", "Testpw12", "Testpw12");
         });
     }
 }

@@ -11,11 +11,13 @@ public class AuthenticationService implements IAuthenticationService {
     }
 
     /**
-     * Creates a new user if username and password are valid and adds it to the userDAO.
+     * Creates a new user if username and password are valid and adds it to the
+     * userDAO.
+     * 
      * @param username The username of the user.
      * @param password The password of the user.
      */
-    public void register (String username, String password, int postcode) {
+    public void register(String username, String password, int postcode) {
         validateUsername(username);
         validatePassword(password);
         validatePostcode(postcode);
@@ -25,11 +27,13 @@ public class AuthenticationService implements IAuthenticationService {
     }
 
     /**
-     * Returns the user from UserDAO which matches the username and password entered.
+     * Returns the user from UserDAO which matches the username and password
+     * entered.
+     * 
      * @param username The username of the user.
      * @param password The password of the user.
      */
-    public User login (String username, String password) {
+    public User login(String username, String password) {
         if (username == null || username.isBlank()) {
             throw new IllegalArgumentException("Username cannot be blank. Please enter a username");
         }
@@ -50,6 +54,21 @@ public class AuthenticationService implements IAuthenticationService {
     }
 
     @Override
+    public void changePassword(String username, String currentPassword, String newPassword) {
+        User user = userDAO.findByUsername(username);
+
+        if (user == null || !user.getPassword().equals(currentPassword)) {
+            throw new IllegalArgumentException("Current password is incorrect.");
+        }
+        validatePassword(newPassword);
+        if (newPassword.equals(currentPassword)) {
+            throw new IllegalArgumentException("New password must be different from the current password.");
+        }
+
+        userDAO.updatePassword(username, newPassword);
+    }
+
+    @Override
     public List<String> getSuburbsByPostcode(int postcode) {
         return userDAO.findSuburbsByPostcode(postcode);
     }
@@ -66,34 +85,39 @@ public class AuthenticationService implements IAuthenticationService {
     }
 
     /**
-     * Checks that a username is of a valid format for registration: Username must not be null or blank,
+     * Checks that a username is of a valid format for registration: Username must
+     * not be null or blank,
      * cannot contain spaces, and must not be the same as another user.
+     * 
      * @param username The username to be validated.
      */
-    private void validateUsername(String username){
+    private void validateUsername(String username) {
 
-        if (username == null ||username.isBlank()){
+        if (username == null || username.isBlank()) {
             throw new IllegalArgumentException("Username cannot be blank.");
         }
-        if (username.length() > 20 ){
+        if (username.length() > 20) {
             throw new IllegalArgumentException("Username must be 20 characters or less.");
         }
         if (username.contains(" ")) {
             throw new IllegalArgumentException("Password cannot contain spaces.");
         }
-        if (userDAO.usernameExists(username)){
+        if (userDAO.usernameExists(username)) {
             throw new IllegalArgumentException("Username is already taken.");
         }
 
     }
 
     /**
-     * Checks that a password is of a valid format for registration: Password must not be null or blank,
-     * cannot contain spaces, must be 8-20 characters, must contain at least one lowercase letter,
+     * Checks that a password is of a valid format for registration: Password must
+     * not be null or blank,
+     * cannot contain spaces, must be 8-20 characters, must contain at least one
+     * lowercase letter,
      * uppercase letter, and number.
+     * 
      * @param password The password to be validated.
      */
-    private static void validatePassword(String password){
+    private static void validatePassword(String password) {
         if (password == null || password.isBlank()) {
             throw new IllegalArgumentException("Password cannot be blank");
         }
@@ -122,10 +146,10 @@ public class AuthenticationService implements IAuthenticationService {
         if (!hasDigit) {
             throw new IllegalArgumentException("Password must contain at least one number .");
         }
-        if (!hasUppercase){
+        if (!hasUppercase) {
             throw new IllegalArgumentException("Password must contain an uppercase character.");
         }
-        if (!hasLowercase){
+        if (!hasLowercase) {
             throw new IllegalArgumentException("Password must contain a lower case character.");
         }
     }

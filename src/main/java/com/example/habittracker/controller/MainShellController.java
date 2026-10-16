@@ -16,6 +16,7 @@ public class MainShellController {
     private static final String VIEW_FOLDER = "/com/example/habittracker/";
     private static final String HOME_VIEW = "todayhabit.fxml";
     private static final String HABITS_VIEW = "habits.fxml";
+    private static final String PROFILE_VIEW = "profile.fxml";
     private static final String LEADERBOARD_VIEW = "leaderboard.fxml";
     private static final String ACTIVE_STYLE = "active";
 
@@ -41,22 +42,25 @@ public class MainShellController {
     @FXML
     private Button profileButton;
 
-    @FXML
-    private Button settingsButton;
-
     private List<Button> navButtons;
 
     private User user;
 
+    private Runnable onLogout;
+
     @FXML
     public void initialize() {
         navButtons = List.of(homeButton, habitsButton, communityGoalsButton, leaderboardButton,
-                achievementsButton, profileButton, settingsButton);
+                achievementsButton, profileButton);
     }
 
     public void setUser(User user) {
         this.user = user;
         navigate(homeButton, HOME_VIEW);
+    }
+    
+    public void setOnLogout(Runnable onLogout) {
+    this.onLogout = onLogout;
     }
 
     @FXML
@@ -86,12 +90,7 @@ public class MainShellController {
 
     @FXML
     private void onProfileClicked() {
-        showComingSoon(profileButton, "Profile page");
-    }
-
-    @FXML
-    private void onSettingsClicked() {
-        showComingSoon(settingsButton, "Setting page");
+        navigate(profileButton, PROFILE_VIEW);
     }
 
     private void navigate(Button navButton, String view) {
@@ -128,6 +127,10 @@ public class MainShellController {
                 homeController.setUser(user);
             } else if (controller instanceof HabitsController) {
                 ((HabitsController) controller).setUser(user);
+            } else if (controller instanceof ProfileController) {
+                ProfileController profileController = (ProfileController) controller;
+                profileController.setUser(user);
+                profileController.setOnLogout(onLogout);
             }
 
             contentArea.getChildren().setAll(page);

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="20" styleClass="home-page"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.habittracker.controller.ProfileController">
+
+    <padding>
+        <Insets top="32" right="32" bottom="32" left="32"/>
+    </padding>
+
+    <Label text="Profile" styleClass="page-title"/>
+
+    <VBox spacing="6" styleClass="card" maxWidth="440">
+        <Label text="Account" styleClass="card-title"/>
+        <Label text="Username" styleClass="field-label"/>
+        <Label fx:id="usernameLabel" styleClass="profile-username"/>
+    </VBox>
+
+    <VBox spacing="10" styleClass="card" maxWidth="440">
+        <Label text="Change password" styleClass="card-title"/>
+        <PasswordField fx:id="currentPasswordField" promptText="Current password"
+                       styleClass="password-field"/>
+        <PasswordField fx:id="newPasswordField" promptText="New password"
+                       styleClass="password-field"/>
+        <PasswordField fx:id="confirmPasswordField" promptText="Confirm new password"
+                       styleClass="password-field"/>
+        <Label text="8 to 20 characters, with an uppercase letter, a lowercase letter and a number."
+               styleClass="habit-detail" wrapText="true"/>
+        <Button text="Save password" onAction="#onChangePasswordClicked"
+                styleClass="primary-button"/>
+        <Label fx:id="messageLabel" wrapText="true" minHeight="20"/>
+    </VBox>
+
+    <Button text="Log out" onAction="#onLogoutClicked" styleClass="logout-button"/>
+</VBox>
