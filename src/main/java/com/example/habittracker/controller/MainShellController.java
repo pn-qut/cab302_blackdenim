@@ -16,11 +16,8 @@ public class MainShellController {
     private static final String VIEW_FOLDER = "/com/example/habittracker/";
     private static final String HOME_VIEW = "todayhabit.fxml";
     private static final String HABITS_VIEW = "habits.fxml";
-<<<<<<< HEAD
     private static final String PROFILE_VIEW = "profile.fxml";
-=======
     private static final String LEADERBOARD_VIEW = "leaderboard.fxml";
->>>>>>> origin/master
     private static final String ACTIVE_STYLE = "active";
 
 
