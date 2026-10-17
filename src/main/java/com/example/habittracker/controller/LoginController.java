@@ -52,7 +52,7 @@ public class LoginController {
     private void goToMainWindow(User user) {
         try {
             Stage stage = (Stage) loginButton.getScene().getWindow();
-            MainPageApp.showOn(stage, user);
+            MainPageApp.showOn(stage, user, authenticationService);
         } catch (IOException e) {
             errorLabel.setText("Unable to load the main window.");
         }

@@ -3,6 +3,7 @@ package com.example.habittracker;
 import java.io.IOException;
 
 import com.example.habittracker.controller.MainShellController;
+import com.example.habittracker.model.IAuthenticationService;
 import com.example.habittracker.model.User;
 
 import javafx.fxml.FXMLLoader;
@@ -21,12 +22,13 @@ public class MainPageApp {
      * main application from another screen (e.g. after a successful login).
      * Also sets the logout action, which returns to the login screen on the same stage.
      */
-    public static void showOn(Stage stage, User user) throws IOException {
+    public static void showOn(Stage stage, User user, IAuthenticationService authenticationService) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainPageApp.class.getResource("mainpage.fxml"));
 
         Parent root = fxmlLoader.load();
 
         MainShellController controller = fxmlLoader.getController();
+        controller.setAuthenticationService(authenticationService);
         controller.setOnLogout(() -> {
             try {
                 LoginUI.showOn(stage);

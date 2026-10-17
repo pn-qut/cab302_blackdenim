@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Label;
+import com.example.habittracker.model.IAuthenticationService;
 
 import java.io.IOException;
 import java.util.List;
@@ -48,6 +49,8 @@ public class MainShellController {
 
     private Runnable onLogout;
 
+    private IAuthenticationService authenticationService;
+
     @FXML
     public void initialize() {
         navButtons = List.of(homeButton, habitsButton, communityGoalsButton, leaderboardButton,
@@ -61,6 +64,10 @@ public class MainShellController {
     
     public void setOnLogout(Runnable onLogout) {
     this.onLogout = onLogout;
+    }
+
+    public void setAuthenticationService(IAuthenticationService authenticationService) {
+    this.authenticationService = authenticationService;
     }
 
     @FXML
@@ -129,6 +136,7 @@ public class MainShellController {
                 ((HabitsController) controller).setUser(user);
             } else if (controller instanceof ProfileController) {
                 ProfileController profileController = (ProfileController) controller;
+                profileController.setAuthenticationService(authenticationService);
                 profileController.setUser(user);
                 profileController.setOnLogout(onLogout);
             }

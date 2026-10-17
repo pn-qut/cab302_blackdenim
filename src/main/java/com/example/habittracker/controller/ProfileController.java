@@ -1,8 +1,6 @@
 package com.example.habittracker.controller;
 
-import com.example.habittracker.model.AuthenticationService;
 import com.example.habittracker.model.IAuthenticationService;
-import com.example.habittracker.model.SqliteUserDAO;
 import com.example.habittracker.model.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -20,12 +18,12 @@ public class ProfileController {
     @FXML private PasswordField confirmPasswordField;
     @FXML private Label messageLabel;
 
-    private final IAuthenticationService authenticationService;
+    private IAuthenticationService authenticationService;
     private User user;
     private Runnable onLogout;
 
-    public ProfileController() {
-        this.authenticationService = new AuthenticationService(new SqliteUserDAO());
+    public void setAuthenticationService(IAuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
     }
 
     public void setUser(User user) {
