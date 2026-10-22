@@ -1,4 +1,5 @@
 import com.example.habittracker.model.Habit;
+import com.example.habittracker.model.SqliteCommunityHabitDAO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,31 +9,31 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SqliteCommunityHabitDAOTest {
 
-    private SqliteCommunityHabitDAO habitDAO;
+    private SqliteCommunityHabitDAO communityHabitDAO;
 
     @BeforeEach
     void setUp() {
-        habitDAO = new SqliteCommunityHabitDAO();
+        communityHabitDAO = new SqliteCommunityHabitDAO();
     }
 
     @Test
-    void getCommunityHabitTest() {
+    void getCommunityHabitIDTest() {
 
-        int postcode = 4000;
-        String expectedName = "TestHabit";
-        Habit communityhabit = habitDAO.getCommunityHabit(postcode);
+        int postcode = 0;
+        int expectedHabitID = 17;
+        Integer communityhabit = communityHabitDAO.getCommunityHabitID(postcode);
 
         assertNotNull(communityhabit);
-        assertEquals(expectedName, communityhabit.getName());
+        assertEquals(expectedHabitID, communityhabit);
     }
 
     @Test
     void getDailyCommunityCompletionsTest() {
-        int postcode = 4000;
-        LocalDate today = LocalDate.of(2026,10,22);
-        int expectedTestResult = 2;
+        int postcode = 0;
+        LocalDate today = LocalDate.of(2026,10,15);
+        int expectedTestResult = 1;
 
-        int totalCompletions = habitDAO.getTotalCommunityCompletions(postcode, today);
+        int totalCompletions = communityHabitDAO.getTotalCommunityCompletions(postcode, today);
 
         assertEquals(expectedTestResult, totalCompletions);
     }
