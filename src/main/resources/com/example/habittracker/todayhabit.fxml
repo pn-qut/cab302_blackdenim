@@ -1,61 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.habittracker.controller.TodayHabitController"
-      spacing="20"
-      styleClass="home-page">
+<VBox spacing="20" styleClass="home-page" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.habittracker.controller.TodayHabitController">
 
     <padding>
-        <Insets top="40"
-                right="50"
-                bottom="40"
-                left="50"/>
+        <Insets bottom="40" left="50" right="50" top="40" />
     </padding>
 
     <VBox styleClass="header">
-        <Label fx:id="dateLabel"
-               styleClass="date-label"/>
-        <Label fx:id="greetingLabel"
-               styleClass="page-title"/>
+        <Label fx:id="dateLabel" styleClass="date-label" />
     </VBox>
 
-    <HBox spacing="24"
-          VBox.vgrow="ALWAYS">
+    <HBox spacing="24" VBox.vgrow="ALWAYS">
 
-        <VBox spacing="12"
-              HBox.hgrow="ALWAYS"
-              styleClass="card">
-            <Label text="Today's habits"
-                   styleClass="card-title"/>
+        <VBox spacing="12" styleClass="card" HBox.hgrow="ALWAYS">
+         <ListView fx:id="communityGoal" prefHeight="60.0" prefWidth="176.0" />
+           <Label fx:id="greetingLabel" styleClass="page-title" />
+            <Label styleClass="card-title" text="Today's habits" />
 
-            <Label fx:id="scoreLabel"
-                   text="Score: 0"
-                   styleClass="score-label"/>
+            <Label fx:id="scoreLabel" styleClass="score-label" text="Score: 0" />
 
-            <ListView fx:id="todayHabitsList"
-                      VBox.vgrow="ALWAYS"/>
+            <ListView fx:id="todayHabitsList" VBox.vgrow="ALWAYS" />
 
-            <Button text="+ Add a habit"
-                    onAction="#onAddHabitClicked"
-                    maxWidth="Infinity"/>
+            <Button maxWidth="Infinity" onAction="#onAddHabitClicked" text="+ Add a habit" />
         </VBox>
 
-        <VBox spacing="12"
-              prefWidth="320"
-              minWidth="280"
-              styleClass="card">
-            <Label text="This week's progress"
-                   styleClass="card-title"/>
+        <VBox minWidth="280" prefWidth="320" spacing="12" styleClass="card">
+            <Label styleClass="card-title" text="This week's progress" />
 
-            <VBox fx:id="weeklyProgressBox"
-                  spacing="10"/>
+            <VBox fx:id="weeklyProgressBox" spacing="10" />
         </VBox>
 
     </HBox>
