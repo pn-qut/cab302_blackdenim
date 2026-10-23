@@ -10,15 +10,21 @@
         <Insets bottom="40" left="50" right="50" top="40" />
     </padding>
 
-    <VBox styleClass="header">
-        <Label fx:id="dateLabel" styleClass="date-label" />
-    </VBox>
+    <HBox prefHeight="31.0" prefWidth="592.0" styleClass="header">
+        <Label fx:id="greetingLabel" styleClass="page-title" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Label fx:id="dateLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" styleClass="date-label" textAlignment="RIGHT" />
+    </HBox>
 
     <HBox spacing="24" VBox.vgrow="ALWAYS">
 
-        <VBox spacing="12" styleClass="card" HBox.hgrow="ALWAYS">
-         <ListView fx:id="communityGoal" prefHeight="60.0" prefWidth="176.0" />
-           <Label fx:id="greetingLabel" styleClass="page-title" />
+
+        <VBox spacing="12" HBox.hgrow="ALWAYS">
+            <VBox spacing="12" styleClass="card">
+                <Label styleClass="card-title" text="This Month's Community Goal" />
+                <ListView fx:id="communityGoal" prefHeight="120.0" />
+            </VBox>
+            <VBox spacing="12" styleClass="card">
             <Label styleClass="card-title" text="Today's habits" />
 
             <Label fx:id="scoreLabel" styleClass="score-label" text="Score: 0" />
@@ -26,6 +32,7 @@
             <ListView fx:id="todayHabitsList" VBox.vgrow="ALWAYS" />
 
             <Button maxWidth="Infinity" onAction="#onAddHabitClicked" text="+ Add a habit" />
+            </VBox>
         </VBox>
 
         <VBox minWidth="280" prefWidth="320" spacing="12" styleClass="card">

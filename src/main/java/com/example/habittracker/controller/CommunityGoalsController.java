@@ -6,28 +6,36 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class CommunityGoalsController {
+
+    @FXML
+    private Label communityGoalsTitle;
+
+    @FXML
+    private Label communityGoalsHabitLabel;
 
     @FXML
     private LineChart<String, Integer> communityGoalsChart;
 
     private final ObservableList<LineChart.Series<String,Integer>> communityGoalsSeries = FXCollections.observableArrayList();
+    private final HabitService habitService = DAOFactory.createHabitService();
+    private final ICommunityHabitDAO communityHabitDAO = DAOFactory.getCommunityHabitEntryDAO();
 
-    private final ICommunityHabitDAO communityHabitDAO=DAOFactory.getCommunityHabitEntryDAO();
     private Integer postcode;
+    private int communityHabitID;
+    private Habit communityHabit;
 
     public void setUser(User user) {
         postcode = user.getPostcode();
+        communityHabitID = communityHabitDAO.getCommunityHabitID(postcode);
+        communityHabit = habitService.getHabitFromID(communityHabitID);
+        updatePageHeader(user);
         getDataForGraph();
         System.out.println(communityGoalsSeries);
     }
@@ -35,6 +43,12 @@ public class CommunityGoalsController {
     @FXML
     public void initialize() {
         communityGoalsChart.setData(communityGoalsSeries);
+    }
+
+    private void updatePageHeader(User user) {
+        String userPostcode = postcode.toString();
+        communityGoalsTitle.setText("Community Goal Summary for Post Code "+userPostcode);
+        communityGoalsHabitLabel.setText("The Community Goal for this month is: " + communityHabit.getName() + "!");
     }
 
     public void getDataForGraph(){

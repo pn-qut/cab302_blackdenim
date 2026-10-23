@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.habittracker.controller.CommunityGoalsController">
-   <children>
-      <Label text="This month's community Goal" />
-      <LineChart fx:id="communityGoalsChart" title="Community Goals">
-        <xAxis>
-          <CategoryAxis side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis side="LEFT" />
-        </yAxis>
-      </LineChart>
-   </children>
+<VBox spacing="20" styleClass="home-page" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.habittracker.controller.CommunityGoalsController">
+
+    <padding>
+        <Insets bottom="40" left="50" right="50" top="40" />
+    </padding>
+
+    <Label fx:id="communityGoalsTitle" styleClass="page-title" />
+    <Label fx:id="communityGoalsHabitLabel" styleClass="card-title" />
+    
+    <VBox spacing="6" styleClass="card">
+        <LineChart fx:id="communityGoalsChart" legendVisible="false">
+            <xAxis>
+                <CategoryAxis label="Day of the Month" side="BOTTOM" styleClass="Label"/>
+            </xAxis>
+            <yAxis>
+                <NumberAxis label="No. of People Who Completed" side="LEFT" styleClass="Label" />
+            </yAxis>
+        </LineChart>
+    </VBox>
 </VBox>
