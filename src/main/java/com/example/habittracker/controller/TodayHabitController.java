@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.HBox;
@@ -43,6 +42,8 @@ public class TodayHabitController implements HabitObserver {
     private Runnable onAddHabitAction;
 
     private final HabitService habitService = DAOFactory.createHabitService();
+
+    private final IHabitDAO habitDAO = DAOFactory.getHabitDAO();
 
     private final ICommunityHabitDAO communityHabitDAO = DAOFactory.getCommunityHabitEntryDAO();
 
@@ -82,10 +83,10 @@ public class TodayHabitController implements HabitObserver {
         {
             if(communityHabitList.isEmpty())
             {
-                communityHabitList.add(habitService.getHabitFromID(communityHabitID));
+                communityHabitList.add(habitDAO.findHabitById(communityHabitID));
             }
             else{
-                communityHabitList.set(0,habitService.getHabitFromID(communityHabitID));
+                communityHabitList.set(0,habitDAO.findHabitById(communityHabitID));
             }
 
         }

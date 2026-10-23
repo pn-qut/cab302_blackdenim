@@ -8,7 +8,6 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
 
@@ -24,18 +23,17 @@ public class CommunityGoalsController {
     private LineChart<String, Integer> communityGoalsChart;
 
     private final ObservableList<LineChart.Series<String,Integer>> communityGoalsSeries = FXCollections.observableArrayList();
-    private final HabitService habitService = DAOFactory.createHabitService();
+    private final IHabitDAO habitDAO = DAOFactory.getHabitDAO();
     private final ICommunityHabitDAO communityHabitDAO = DAOFactory.getCommunityHabitEntryDAO();
 
     private Integer postcode;
-    private int communityHabitID;
     private Habit communityHabit;
 
     public void setUser(User user) {
         postcode = user.getPostcode();
-        communityHabitID = communityHabitDAO.getCommunityHabitID(postcode);
-        communityHabit = habitService.getHabitFromID(communityHabitID);
-        updatePageHeader(user);
+        int communityHabitID = communityHabitDAO.getCommunityHabitID(postcode);
+        communityHabit = habitDAO.findHabitById(communityHabitID);
+        updatePageHeader();
         getDataForGraph();
         System.out.println(communityGoalsSeries);
     }
@@ -45,7 +43,7 @@ public class CommunityGoalsController {
         communityGoalsChart.setData(communityGoalsSeries);
     }
 
-    private void updatePageHeader(User user) {
+    private void updatePageHeader() {
         String userPostcode = postcode.toString();
         communityGoalsTitle.setText("Community Goal Summary for Post Code "+userPostcode);
         communityGoalsHabitLabel.setText("The Community Goal for this month is: " + communityHabit.getName() + "!");
@@ -55,7 +53,7 @@ public class CommunityGoalsController {
         YearMonth currentMonth=YearMonth.now();
         LocalDate start = LocalDate.of(currentMonth.getYear(), currentMonth.getMonthValue(),1);
         LocalDate end = LocalDate.of(currentMonth.getYear(), currentMonth.getMonthValue(), currentMonth.atEndOfMonth().getDayOfMonth());
-        ArrayList<LocalDate> totalDates = new ArrayList<LocalDate>();
+        ArrayList<LocalDate> totalDates = new ArrayList<>();
         while (!start.isAfter(end)) {
             totalDates.add(start);
             start = start.plusDays(1);

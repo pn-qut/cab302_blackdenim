@@ -34,6 +34,6 @@ public class DAOFactory {
      * Creates a habit service backed by the app's DAOs.
      */
     public static HabitService createHabitService() {
-        return new HabitService(habitEntryDAO, userHabitDAO, habitDAO);
+        return new HabitService(habitEntryDAO, userHabitDAO);
     }
 }

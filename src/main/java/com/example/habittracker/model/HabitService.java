@@ -16,13 +16,11 @@ public class HabitService {
 
     private final IHabitEntryDAO entryDAO;
     private final IUserHabitDAO userHabitDAO;
-    private final IHabitDAO habitDAO;
     private final List<HabitObserver> observers = new ArrayList<>();
 
-    public HabitService(IHabitEntryDAO entryDAO, IUserHabitDAO userHabitDAO, IHabitDAO habitDAO) {
+    public HabitService(IHabitEntryDAO entryDAO, IUserHabitDAO userHabitDAO) {
         this.entryDAO = entryDAO;
         this.userHabitDAO = userHabitDAO;
-        this.habitDAO=habitDAO;
     }
 
     /**
@@ -117,13 +115,6 @@ public class HabitService {
      */
     public int getUserMonthlyScore(int userId, int month, int year) {
         return entryDAO.getUserMonthlyScore(userId, month, year);
-    }
-
-    /**
-     * Get a habit by id
-     */
-    public Habit getHabitFromID(int habitID) {
-        return habitDAO.findHabitById(habitID);
     }
 
     /**
