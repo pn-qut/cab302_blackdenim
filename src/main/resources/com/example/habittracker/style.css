@@ -232,3 +232,34 @@
 .logout-button:hover {
     -fx-background-color: #f8ebe8;
 }
+
+/*  Login  */
+
+.login-brand {
+    -fx-background-color: -green;
+}
+
+.login-brand-title {
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.login-brand-tagline {
+    -fx-font-size: 18px;
+    -fx-text-fill: -green-light;
+}
+
+.login-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+}
+
+.error-label {
+    -fx-text-fill: #b5483a;
+    -fx-font-size: 13px;
+}
+
+.hyperlink {
+    -fx-text-fill: -green;
+}
