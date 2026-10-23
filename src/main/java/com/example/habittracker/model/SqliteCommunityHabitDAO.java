@@ -2,14 +2,43 @@ package com.example.habittracker.model;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SqliteCommunityHabitDAO implements ICommunityHabitDAO{
-    private Connection connection;
+    private final Connection connection;
 
     public SqliteCommunityHabitDAO(){
         connection = SqliteConnection.getInstance();
+        createTable();
+        addDefaultCommunityHabits();
+    }
+
+    private void createTable() {
+        // Create table if not exists
+        try {
+            Statement statement = connection.createStatement();
+            String query = "CREATE TABLE IF NOT EXISTS community_habits ("
+                    + "postcode	INTEGER NOT NULL, "
+                    + "habit_id	INTEGER, "
+                    + "PRIMARY KEY(postcode), "
+                    + "CONSTRAINT habit_id FOREIGN KEY(habit_id) REFERENCES habits(habit_id))";
+            statement.execute(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addDefaultCommunityHabits(){
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    "INSERT OR IGNORE INTO community_habits (postcode, habit_id) VALUES (?, ?)"
+            );
+
+            statement.setInt(1, 0);
+            statement.setInt(2, 17);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public Integer getCommunityHabitID(int postcode){
