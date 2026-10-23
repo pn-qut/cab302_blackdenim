@@ -57,8 +57,9 @@ public class RegistrationController {
         } catch (IllegalArgumentException e) {
             errorLabel.setText(e.getMessage());
         }
-        catch (Exception e){
-            errorLabel.setText("Unable to register. Please try again.");
+          catch (Exception e){
+            e.printStackTrace();
+            errorLabel.setText("Unable to register: " + e.getClass().getSimpleName() + " - " + e.getMessage());
         }
     }
 

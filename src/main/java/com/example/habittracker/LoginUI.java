@@ -23,9 +23,17 @@ public class LoginUI extends Application {
     public static void showOn(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(LoginUI.class.getResource("login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), WIDTH, HEIGHT);
+        applyStyles(scene);
         stage.setTitle(TITLE);
         stage.setScene(scene);
         stage.sizeToScene();
         stage.show();
+    }
+
+    /**
+     * Applies the shared app stylesheet to a login or registration scene.
+     */
+    public static void applyStyles(Scene scene) {
+        scene.getStylesheets().add(LoginUI.class.getResource("style.css").toExternalForm());
     }
 }
