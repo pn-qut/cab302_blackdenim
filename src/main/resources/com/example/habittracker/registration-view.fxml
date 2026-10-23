@@ -1,54 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.habittracker.controller.RegistrationController">
+<GridPane styleClass="home-page" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.habittracker.controller.RegistrationController">
   <columnConstraints>
-    <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="375.0" />
-    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="373.8" minWidth="10.0" prefWidth="373.4" />
+    <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
+    <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
+    <RowConstraints vgrow="ALWAYS" />
   </rowConstraints>
-   <children>
-      <AnchorPane prefHeight="500.0" prefWidth="375.0" style="-fx-background-color: lightgrey;">
-         <children>
-            <Label layoutX="36.0" layoutY="206.0" text="EcoHabit">
-               <font>
-                  <Font name="Inter Semi Bold" size="35.0" />
-               </font>
-            </Label>
-            <Label layoutX="36.0" layoutY="250.0" text="Habits for Tomorrow, Together">
-               <font>
-                  <Font name="Inter Semi Bold" size="20.0" />
-               </font>
-            </Label>
-         </children></AnchorPane>
-      <AnchorPane prefHeight="500.0" prefWidth="375.0" GridPane.columnIndex="1" GridPane.valignment="CENTER">
-         <children>
-            <Label layoutX="73.0" layoutY="205.0" text="Set Username" />
-            <TextField fx:id="usernameTextField" alignment="CENTER" layoutX="73.0" layoutY="223.0" prefHeight="26.0" prefWidth="228.0" />
-            <Label layoutX="73.0" layoutY="257.0" text="Set Password" />
-            <PasswordField fx:id="passwordTextField" alignment="CENTER" layoutX="73.0" layoutY="275.0" prefHeight="26.0" prefWidth="228.0" />
-            <Label layoutX="73.0" layoutY="309.0" text="Queensland Postcode" />
-            <TextField fx:id="postcodeTextField" alignment="CENTER" layoutX="73.0" layoutY="327.0" prefHeight="26.0" prefWidth="228.0" promptText="e.g. 4000" />
-            <Button fx:id="registerConfirmButton" alignment="CENTER" layoutX="136.0" layoutY="390.0" mnemonicParsing="false" onAction="#onRegisterConfirmButtonClicked" prefHeight="26.0" prefWidth="102.0" text="Create Account" />
-            <HBox alignment="CENTER" layoutX="78.0" layoutY="416.0" prefHeight="36.0" prefWidth="217.0">
-               <children>
-                  <Label text="Already have an account?" textAlignment="CENTER" />
-                  <Hyperlink fx:id="loginLink" onAction="#onGoToLoginButtonClicked" text="Login" textAlignment="CENTER" />
-               </children>
-            </HBox>
-            <Label layoutX="73.0" layoutY="162.0" text="Welcome to EcoHabit!">
-               <font>
-                  <Font name="Inter Semi Bold" size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="errorLabel" alignment="CENTER" layoutX="73.0" layoutY="360.0" prefWidth="228.0" textAlignment="CENTER" />
-         </children>
-      </AnchorPane>
-   </children>
+  <children>
+    <VBox alignment="CENTER_LEFT" spacing="8.0" styleClass="login-brand">
+      <padding>
+        <Insets bottom="40.0" left="48.0" right="40.0" top="40.0" />
+      </padding>
+      <children>
+        <Label styleClass="login-brand-title" text="EcoHabit" />
+        <Label styleClass="login-brand-tagline" text="Habits for Tomorrow, Together" wrapText="true" />
+      </children>
+    </VBox>
 
+    <StackPane GridPane.columnIndex="1">
+      <children>
+        <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="340.0" spacing="8.0" styleClass="card">
+          <children>
+            <Label styleClass="login-title" text="Welcome to EcoHabit!" />
+            <Label styleClass="field-label" text="Set Username">
+              <VBox.margin>
+                <Insets top="8.0" />
+              </VBox.margin>
+            </Label>
+            <TextField fx:id="usernameTextField" styleClass="password-field" />
+            <Label styleClass="field-label" text="Set Password">
+              <VBox.margin>
+                <Insets top="4.0" />
+              </VBox.margin>
+            </Label>
+            <PasswordField fx:id="passwordTextField" styleClass="password-field" />
+            <Label styleClass="field-label" text="Queensland Postcode">
+              <VBox.margin>
+                <Insets top="4.0" />
+              </VBox.margin>
+            </Label>
+            <TextField fx:id="postcodeTextField" onAction="#onRegisterConfirmButtonClicked" promptText="e.g. 4000" styleClass="password-field" />
+            <Label fx:id="errorLabel" minHeight="20.0" styleClass="error-label" wrapText="true" />
+            <Button fx:id="registerConfirmButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onRegisterConfirmButtonClicked" styleClass="primary-button" text="Create Account" />
+            <HBox alignment="CENTER" spacing="2.0">
+              <children>
+                <Label text="Already have an account?" />
+                <Hyperlink fx:id="loginLink" onAction="#onGoToLoginButtonClicked" text="Login" />
+              </children>
+            </HBox>
+          </children>
+        </VBox>
+      </children>
+    </StackPane>
+  </children>
 </GridPane>
