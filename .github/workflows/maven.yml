@@ -37,8 +37,9 @@ jobs:
       run: ./mvnw javadoc:javadoc
     - uses: actions/upload-pages-artifact@v3
       with:
-        path: ./docs/javadoc
+        path: ./docs/javadoc/apidocs
   deploy:
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
     permissions:
       pages: write
       id-token: write
