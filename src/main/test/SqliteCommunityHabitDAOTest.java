@@ -1,5 +1,4 @@
-import com.example.habittracker.model.Habit;
-import com.example.habittracker.model.SqliteCommunityHabitDAO;
+import com.example.habittracker.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,11 +8,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SqliteCommunityHabitDAOTest {
 
-    private SqliteCommunityHabitDAO communityHabitDAO;
+    private ICommunityHabitDAO communityHabitDAO;
 
     @BeforeEach
     void setUp() {
-        communityHabitDAO = new SqliteCommunityHabitDAO();
+        communityHabitDAO = new MockCommunityHabitDAO();
     }
 
     @Test
