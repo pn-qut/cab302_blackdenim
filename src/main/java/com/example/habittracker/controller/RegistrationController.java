@@ -68,6 +68,7 @@ public class RegistrationController {
         Stage stage = (Stage) loginLink.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(LoginUI.class.getResource("login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), LoginUI.WIDTH, LoginUI.HEIGHT);
+        LoginUI.applyStyles(scene);
         stage.setScene(scene);
     }
 }
