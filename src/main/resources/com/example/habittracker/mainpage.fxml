@@ -59,12 +59,7 @@
                     onAction="#onProfileClicked"
                     maxWidth="Infinity"
                     styleClass="nav-button"/>
-
-            <Button fx:id="settingsButton"
-                    text="Settings"
-                    onAction="#onSettingsClicked"
-                    maxWidth="Infinity"
-                    styleClass="nav-button"/>
+ 
 
         </VBox>
     </left>

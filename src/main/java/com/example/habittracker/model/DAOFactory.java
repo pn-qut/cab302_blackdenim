@@ -8,6 +8,7 @@ public class DAOFactory {
     private static final IHabitDAO habitDAO = new SqliteHabitDAO();
     private static final IUserHabitDAO userHabitDAO = new SqliteUserHabitDAO();
     private static final IHabitEntryDAO habitEntryDAO = new SqliteHabitEntryDAO();
+    private static final ICommunityHabitDAO communityHabitEntryDAO = new SqliteCommunityHabitDAO();
 
     private DAOFactory() {
     }
@@ -23,6 +24,11 @@ public class DAOFactory {
     public static IHabitEntryDAO getHabitEntryDAO() {
         return habitEntryDAO;
     }
+
+    public static ICommunityHabitDAO getCommunityHabitEntryDAO() {
+        return communityHabitEntryDAO;
+    }
+
 
     /**
      * Creates a habit service backed by the app's DAOs.

@@ -1,33 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.habittracker.controller.TodayHabitController"
-      spacing="20"
-      styleClass="home-page">
+<VBox spacing="20" styleClass="home-page" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.habittracker.controller.TodayHabitController">
 
     <padding>
-        <Insets top="40"
-                right="50"
-                bottom="40"
-                left="50"/>
+        <Insets bottom="40" left="50" right="50" top="40" />
     </padding>
 
-    <VBox styleClass="header">
-        <Label fx:id="dateLabel"
-               styleClass="date-label"/>
-        <Label fx:id="greetingLabel"
-               styleClass="page-title"/>
-    </VBox>
+    <HBox prefHeight="31.0" prefWidth="592.0" styleClass="header">
+        <Label fx:id="greetingLabel" styleClass="page-title" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Label fx:id="dateLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" styleClass="date-label" textAlignment="RIGHT" />
+    </HBox>
 
-    <HBox spacing="24"
-          VBox.vgrow="ALWAYS">
+    <HBox spacing="24" VBox.vgrow="ALWAYS">
+
+
+        <VBox spacing="12" HBox.hgrow="ALWAYS">
+            <VBox spacing="12" styleClass="card">
+                <Label styleClass="card-title" text="This Month's Community Goal" />
+                <ListView fx:id="communityGoal" prefHeight="120.0" />
+            </VBox>
 
         <VBox spacing="12"
               HBox.hgrow="ALWAYS"
@@ -84,9 +80,9 @@
 
                 <VBox fx:id="weeklyProgressBox"
                       spacing="10"/>
+                </VBox>
             </VBox>
-        </VBox>
 
-    </HBox>
+        </HBox>
 
 </VBox>
