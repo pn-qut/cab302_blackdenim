@@ -263,3 +263,14 @@
 .hyperlink {
     -fx-text-fill: -green;
 }
+
+/*  Achievements  */
+
+.badge-unlocked {
+    -fx-background-color: -green-light;
+    -fx-border-color: -green;
+}
+
+.badge-locked .card-title {
+    -fx-text-fill: -text-muted;
+}
