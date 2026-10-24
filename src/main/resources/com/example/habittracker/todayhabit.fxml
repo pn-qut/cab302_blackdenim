@@ -25,18 +25,19 @@
                 <ListView fx:id="communityGoal" prefHeight="120.0" />
             </VBox>
 
-        <VBox spacing="12"
-              HBox.hgrow="ALWAYS"
-              styleClass="card">
-            <Label text="Today's habits"
-                   styleClass="card-title"/>
+            <VBox spacing="12"
+                  HBox.hgrow="ALWAYS"
+                  styleClass="card">
+                <Label text="Today's habits"
+                       styleClass="card-title"/>
 
-            <ListView fx:id="todayHabitsList"
-                      VBox.vgrow="ALWAYS"/>
+                <ListView fx:id="todayHabitsList"
+                          VBox.vgrow="ALWAYS"/>
 
-            <Button text="+ Add a habit"
-                    onAction="#onAddHabitClicked"
-                    maxWidth="Infinity"/>
+                <Button text="+ Add a habit"
+                        onAction="#onAddHabitClicked"
+                        maxWidth="Infinity"/>
+            </VBox>
         </VBox>
 
         <VBox spacing="24"
