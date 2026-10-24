@@ -147,36 +147,25 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
     }
 
     @Override
-    public int getCurrentStreak(int userId, int habitId) {
-        List<LocalDate> dates = getCompletionDates(userId, habitId);
+    public List<LocalDate> getActiveDates(int userId) {
+        List<LocalDate> dates = new ArrayList<>();
 
-        if (dates.isEmpty()) {
-            return 0;
-        }
+        String query = "SELECT DISTINCT completion_date "
+                + "FROM habit_entries "
+                + "WHERE user_id = ? "
+                + "ORDER BY completion_date DESC";
 
-        LocalDate today = LocalDate.now();
-        LocalDate expectedDate;
-
-        if (isHabitCompleted(userId, habitId, today)){
-            expectedDate = today;
-        } else {
-            // If the habit hasn't been completed today, the streak will continue from yesterday
-            expectedDate = today.minusDays(1);
-        }
-
-        int streak = 0;
-
-        // Calculate the length of the streak
-        for (LocalDate date: dates) {
-            if (date.equals(expectedDate)) {
-                streak++;
-                expectedDate = expectedDate.minusDays(1);
-            } else if (date.isBefore(expectedDate)) {
-                break;
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    dates.add(LocalDate.parse(resultSet.getString("completion_date")));
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        return streak;
+        return dates;
     }
 
     @Override

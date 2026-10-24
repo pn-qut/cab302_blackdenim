@@ -2,10 +2,12 @@ package com.example.habittracker.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class MockHabitEntryDAO implements IHabitEntryDAO {
     private final List<Entry> entries = new ArrayList<>();
@@ -55,9 +57,17 @@ public class MockHabitEntryDAO implements IHabitEntryDAO {
         return List.of();
     }
 
+    /**
+     * Gets every date a user completed at least one habit, most recent first.
+     */
     @Override
-    public int getCurrentStreak(int userId, int habitId) {
-        return 6;
+    public List<LocalDate> getActiveDates(int userId) {
+        return entries.stream()
+                .filter(entry -> entry.userId == userId)
+                .map(entry -> entry.date)
+                .distinct()
+                .sorted(Comparator.reverseOrder())
+                .collect(Collectors.toList());
     }
 
     @Override

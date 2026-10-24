@@ -106,8 +106,27 @@ public class HabitService {
         return progress;
     }
 
-    public int getCurrentStreak(int userId, int habitId){
-        return entryDAO.getCurrentStreak(userId, habitId);
+    /**
+     * Gets how many days in a row the user has completed at least one habit.
+     * A day with no completed habits breaks the streak, but today only counts
+     * against it once it is over, so the streak carries on from yesterday until then.
+     */
+    public int getDailyStreak(int userId, LocalDate today) {
+        List<LocalDate> activeDates = entryDAO.getActiveDates(userId);
+
+        LocalDate expectedDate = activeDates.contains(today) ? today : today.minusDays(1);
+        int streak = 0;
+        for (LocalDate date : activeDates) {
+            if (date.isAfter(expectedDate)) {
+                continue;
+            }
+            if (!date.equals(expectedDate)) {
+                break;
+            }
+            streak++;
+            expectedDate = expectedDate.minusDays(1);
+        }
+        return streak;
     }
 
     /**
