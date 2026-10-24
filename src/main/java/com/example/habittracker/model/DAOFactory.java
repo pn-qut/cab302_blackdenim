@@ -6,7 +6,7 @@ package com.example.habittracker.model;
  */
 public class DAOFactory {
     private static final IHabitDAO habitDAO = new SqliteHabitDAO();
-    private static final IUserHabitDAO userHabitDAO = new SqliteUserSelectedHabitsDAO();
+    private static final IUserHabitDAO userHabitDAO = new SqliteUserHabitDAO();
     private static final IHabitEntryDAO habitEntryDAO = new SqliteHabitEntryDAO();
 
     private DAOFactory() {

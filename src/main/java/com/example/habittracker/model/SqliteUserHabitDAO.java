@@ -7,10 +7,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqliteUserSelectedHabitsDAO implements IUserHabitDAO{
+public class SqliteUserHabitDAO implements IUserHabitDAO{
     private Connection connection;
 
-    public SqliteUserSelectedHabitsDAO(){
+    public SqliteUserHabitDAO(){
         connection = SqliteConnection.getInstance();
         createTable();
     }
