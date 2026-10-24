@@ -35,10 +35,6 @@
             <Label text="Today's habits"
                    styleClass="card-title"/>
 
-            <Label fx:id="scoreLabel"
-                   text="Score: 0"
-                   styleClass="score-label"/>
-
             <ListView fx:id="todayHabitsList"
                       VBox.vgrow="ALWAYS"/>
 
@@ -47,15 +43,39 @@
                     maxWidth="Infinity"/>
         </VBox>
 
-        <VBox spacing="12"
+        <VBox spacing="24"
               prefWidth="320"
-              minWidth="280"
-              styleClass="card">
-            <Label text="This week's progress"
-                   styleClass="card-title"/>
+              minWidth="280">
 
-            <VBox fx:id="weeklyProgressBox"
-                  spacing="10"/>
+            <VBox spacing="12"
+                  VBox.vgrow="ALWAYS"
+                  styleClass="card">
+                <Label text="This week's progress"
+                       styleClass="card-title"/>
+
+                <VBox fx:id="weeklyProgressBox"
+                      spacing="10"/>
+            </VBox>
+
+            <HBox styleClass="card">
+                <VBox styleClass="stat"
+                      HBox.hgrow="ALWAYS">
+                    <Label fx:id="streakLabel"
+                           text="0"
+                           styleClass="stat-value"/>
+                    <Label text="day streak"
+                           styleClass="stat-caption"/>
+                </VBox>
+
+                <VBox styleClass="stat"
+                      HBox.hgrow="ALWAYS">
+                    <Label fx:id="scoreLabel"
+                           text="0"
+                           styleClass="stat-value"/>
+                    <Label text="score this month"
+                           styleClass="stat-caption"/>
+                </VBox>
+            </HBox>
         </VBox>
 
     </HBox>
