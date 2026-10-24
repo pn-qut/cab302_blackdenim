@@ -1,4 +1,5 @@
-import com.example.habittracker.model.*;
+package com.example.habittracker.model;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

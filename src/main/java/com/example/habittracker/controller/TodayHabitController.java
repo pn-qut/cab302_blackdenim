@@ -31,6 +31,12 @@ public class TodayHabitController implements HabitObserver {
     private Label scoreLabel;
 
     @FXML
+    private Label streakLabel;
+
+    @FXML
+    private Label totalScoreLabel;
+
+    @FXML
     private ListView<Habit> todayHabitsList;
 
     @FXML
@@ -98,7 +104,9 @@ public class TodayHabitController implements HabitObserver {
     private void updateScore() {
         LocalDate today = LocalDate.now();
         int score = habitService.getUserMonthlyScore(loggedInUserId, today.getMonthValue(), today.getYear());
-        scoreLabel.setText("Score: " + score);
+        scoreLabel.setText(String.valueOf(score));
+        streakLabel.setText(String.valueOf(habitService.getDailyStreak(loggedInUserId, today)));
+        totalScoreLabel.setText(String.valueOf(habitService.getUserTotalScore(loggedInUserId)));
     }
 
     private void updateHeader(User user) {

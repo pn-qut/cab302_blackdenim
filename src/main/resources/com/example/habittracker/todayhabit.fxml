@@ -24,23 +24,65 @@
                 <Label styleClass="card-title" text="This Month's Community Goal" />
                 <ListView fx:id="communityGoal" prefHeight="120.0" />
             </VBox>
-            <VBox spacing="12" styleClass="card">
-            <Label styleClass="card-title" text="Today's habits" />
 
-            <Label fx:id="scoreLabel" styleClass="score-label" text="Score: 0" />
+        <VBox spacing="12"
+              HBox.hgrow="ALWAYS"
+              styleClass="card">
+            <Label text="Today's habits"
+                   styleClass="card-title"/>
 
-            <ListView fx:id="todayHabitsList" VBox.vgrow="ALWAYS" />
+            <ListView fx:id="todayHabitsList"
+                      VBox.vgrow="ALWAYS"/>
 
-            <Button maxWidth="Infinity" onAction="#onAddHabitClicked" text="+ Add a habit" />
+            <Button text="+ Add a habit"
+                    onAction="#onAddHabitClicked"
+                    maxWidth="Infinity"/>
+        </VBox>
+
+        <VBox spacing="24"
+              prefWidth="320"
+              minWidth="280">
+
+            <HBox styleClass="card">
+                <VBox styleClass="stat"
+                      HBox.hgrow="ALWAYS">
+                    <Label fx:id="streakLabel"
+                           text="0"
+                           styleClass="stat-value"/>
+                    <Label text="day streak"
+                           styleClass="stat-caption"/>
+                </VBox>
+
+                <VBox styleClass="stat"
+                      HBox.hgrow="ALWAYS">
+                    <Label fx:id="scoreLabel"
+                           text="0"
+                           styleClass="stat-value"/>
+                    <Label text="score this month"
+                           styleClass="stat-caption"/>
+                </VBox>
+
+                <VBox styleClass="stat"
+                      HBox.hgrow="ALWAYS">
+                    <Label fx:id="totalScoreLabel"
+                           text="0"
+                           styleClass="stat-value"/>
+                    <Label text="total score"
+                           styleClass="stat-caption"/>
+                </VBox>
+            </HBox>
+
+            <VBox spacing="12"
+                  VBox.vgrow="ALWAYS"
+                  styleClass="card">
+                <Label text="This week's progress"
+                       styleClass="card-title"/>
+
+                <VBox fx:id="weeklyProgressBox"
+                      spacing="10"/>
+                </VBox>
             </VBox>
-        </VBox>
 
-        <VBox minWidth="280" prefWidth="320" spacing="12" styleClass="card">
-            <Label styleClass="card-title" text="This week's progress" />
-
-            <VBox fx:id="weeklyProgressBox" spacing="10" />
-        </VBox>
-
-    </HBox>
+        </HBox>
 
 </VBox>

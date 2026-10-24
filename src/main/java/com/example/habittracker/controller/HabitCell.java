@@ -27,9 +27,8 @@ public class HabitCell extends ListCell<Habit> {
     private final CheckBox checkBox = new CheckBox();
     private final Label nameLabel = new Label();
     private final Region spacer = new Region();
-    private final Label streakLabel = new Label();
     private final Label detailLabel = new Label();
-    private final HBox root = new HBox(10, checkBox, nameLabel, spacer, detailLabel, streakLabel);
+    private final HBox root = new HBox(10, checkBox, nameLabel, spacer, detailLabel);
 
     /**
      * Creates a cell with no detail text.
@@ -61,11 +60,8 @@ public class HabitCell extends ListCell<Habit> {
         } else {
             nameLabel.setText(habit.getName());
             detailLabel.setText(detailText.apply(habit));
-            LocalDate today = LocalDate.now();
             boolean completed = habitService.isHabitCompleted(userIdSupplier.getAsInt(), habit.getId(), LocalDate.now());
             checkBox.setSelected(completed);
-            int streak = habitService.getCurrentStreak(userIdSupplier.getAsInt(), habit.getId());
-            streakLabel.setText(streak + " day streak");
             setGraphic(root);
         }
     }

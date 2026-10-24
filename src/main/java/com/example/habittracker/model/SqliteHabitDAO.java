@@ -8,10 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SqliteHabitDAO implements IHabitDAO{
-    private Connection connection;
+    private final Connection connection;
 
-    public SqliteHabitDAO(){
-        connection = SqliteConnection.getInstance();
+    public SqliteHabitDAO() {
+        this(SqliteConnection.getInstance());
+    }
+
+    public SqliteHabitDAO(Connection connection) {
+        this.connection = connection;
         createTable();
         addDefaultHabits();
     }
@@ -30,7 +34,7 @@ public class SqliteHabitDAO implements IHabitDAO{
         }
     }
 
-    public void addDefaultHabits(){
+    private void addDefaultHabits(){
         try {
             PreparedStatement statement = connection.prepareStatement(
                     "INSERT OR IGNORE INTO habits (name) VALUES (?)"
@@ -72,19 +76,19 @@ public class SqliteHabitDAO implements IHabitDAO{
     }
 
     @Override
-public Habit findHabitById(int id) {
-    String query = "SELECT habit_id, name FROM habits WHERE habit_id = ?";
-    try (PreparedStatement statement = connection.prepareStatement(query)) {
-        statement.setInt(1, id);
-        try (ResultSet rs = statement.executeQuery()) {
-            if (rs.next()) {
-                return new Habit(rs.getInt("habit_id"), rs.getString("name"));
+    public Habit findHabitById(int id) {
+        String query = "SELECT habit_id, name FROM habits WHERE habit_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new Habit(resultSet.getInt("habit_id"), resultSet.getString("name"));
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
+        return null;
     }
-    return null;
 }
-    }
 

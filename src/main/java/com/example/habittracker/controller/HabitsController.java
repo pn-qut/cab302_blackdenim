@@ -78,25 +78,25 @@ public class HabitsController {
         nameLabel.setMaxWidth(120);
         StackPane.setAlignment(nameLabel, Pos.CENTER);
 
-        Button addButton = new Button();
-        StackPane.setAlignment(addButton, Pos.BOTTOM_CENTER);
-        StackPane.setMargin(addButton, new Insets(8));
+        Button toggleButton = new Button();
+        StackPane.setAlignment(toggleButton, Pos.BOTTOM_CENTER);
+        StackPane.setMargin(toggleButton, new Insets(8));
 
-        addButton.setText(isCurrentHabit(habit.getName()) ? "Remove" : "Add");
+        toggleButton.setText(isCurrentHabit(habit.getName()) ? "Remove" : "Add");
 
-        addButton.setOnAction(e -> {
+        toggleButton.setOnAction(e -> {
             if (isCurrentHabit(habit.getName())) {
                 habitService.removeHabitFromUser(loggedInUserId, habit.getId());
                 currentHabits.removeIf(h -> h.getName().equals(habit.getName()));
-                addButton.setText("Add");
+                toggleButton.setText("Add");
             } else {
                 habitService.addHabitToUser(loggedInUserId, habit.getId());
                 currentHabits.add(habit);
-                addButton.setText("Remove");
+                toggleButton.setText("Remove");
             }
         });
 
-        card.getChildren().addAll(nameLabel, addButton);
+        card.getChildren().addAll(nameLabel, toggleButton);
         return card;
     }
 

@@ -120,63 +120,25 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
     }
 
     @Override
-    public List<LocalDate> getCompletionDates(int userId, int habitId){
+    public List<LocalDate> getActiveDates(int userId) {
         List<LocalDate> dates = new ArrayList<>();
 
-        try{
-            String query = "SELECT completion_date "
-                    + "FROM habit_entries "
-                    + "WHERE user_id = ? "
-                    + "AND habit_id = ?"
-                    + "ORDER BY completion_date DESC";
+        String query = "SELECT DISTINCT completion_date "
+                + "FROM habit_entries "
+                + "WHERE user_id = ? "
+                + "ORDER BY completion_date DESC";
 
-            PreparedStatement statement = connection.prepareStatement(query);
-
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, userId);
-            statement.setInt(2, habitId);
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                LocalDate completionDate = LocalDate.parse(resultSet.getString("completion_date"));
-                dates.add(completionDate);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    dates.add(LocalDate.parse(resultSet.getString("completion_date")));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return dates;
-    }
-
-    @Override
-    public int getCurrentStreak(int userId, int habitId) {
-        List<LocalDate> dates = getCompletionDates(userId, habitId);
-
-        if (dates.isEmpty()) {
-            return 0;
-        }
-
-        LocalDate today = LocalDate.now();
-        LocalDate expectedDate;
-
-        if (isHabitCompleted(userId, habitId, today)){
-            expectedDate = today;
-        } else {
-            // If the habit hasn't been completed today, the streak will continue from yesterday
-            expectedDate = today.minusDays(1);
-        }
-
-        int streak = 0;
-
-        // Calculate the length of the streak
-        for (LocalDate date: dates) {
-            if (date.equals(expectedDate)) {
-                streak++;
-                expectedDate = expectedDate.minusDays(1);
-            } else if (date.isBefore(expectedDate)) {
-                break;
-            }
-        }
-
-        return streak;
     }
 
     @Override
@@ -206,6 +168,23 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
         return score;
     }
 
+
+    @Override
+    public int getUserTotalScore(int userId) {
+        String query = "SELECT COUNT(*) FROM habit_entries WHERE user_id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     @Override
     public Map<Integer, Integer> countCompletionsByHabit(int userId, LocalDate from, LocalDate to) {

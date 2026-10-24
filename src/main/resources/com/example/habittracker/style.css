@@ -98,6 +98,24 @@
     -fx-font-weight: bold;
 }
 
+/*  Streak and score  */
+
+.stat {
+    -fx-alignment: center;
+    -fx-spacing: 2;
+}
+
+.stat-value {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -green;
+}
+
+.stat-caption {
+    -fx-font-size: 12px;
+    -fx-text-fill: -text-muted;
+}
+
 /*  Habit list  */
 
 .list-view,
