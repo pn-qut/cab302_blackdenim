@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SqliteHabitDAOTest {
 
@@ -26,6 +27,26 @@ public class SqliteHabitDAOTest {
     @AfterEach
     void tearDown() throws SQLException {
         connection.close();
+    }
+
+    @Test
+    void newDatabaseContainsAllDefaultHabits() {
+        assertEquals(21, habitDAO.getAllHabits().size());
+    }
+
+    @Test
+    void defaultHabitsIncludeExpectedHabit() {
+        boolean found = habitDAO.getAllHabits().stream()
+                .anyMatch(habit -> habit.getName().equals("Use public transport"));
+
+        assertTrue(found);
+    }
+
+    @Test
+    void creatingDaoAgainDoesNotDuplicateDefaultHabits() {
+        new SqliteHabitDAO(connection);
+
+        assertEquals(21, habitDAO.getAllHabits().size());
     }
 
     @Test
