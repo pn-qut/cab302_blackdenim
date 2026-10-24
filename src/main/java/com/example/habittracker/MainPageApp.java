@@ -19,6 +19,7 @@ public class MainPageApp {
     /**
      * Loads the main window into the given stage. Used to transition into the
      * main application from another screen (e.g. after a successful login).
+     * Also sets the logout action, which returns to the login screen on the same stage.
      */
     public static void showOn(Stage stage, User user) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainPageApp.class.getResource("mainpage.fxml"));
@@ -26,6 +27,13 @@ public class MainPageApp {
         Parent root = fxmlLoader.load();
 
         MainShellController controller = fxmlLoader.getController();
+        controller.setOnLogout(() -> {
+            try {
+                LoginUI.showOn(stage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         controller.setUser(user);
 
         Scene scene = new Scene(root, WIDTH, HEIGHT);

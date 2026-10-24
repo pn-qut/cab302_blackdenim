@@ -21,10 +21,18 @@ public interface IUserDAO {
     public boolean usernameExists(String username);
 
     /**
+     * Updates the stored password for a user.
+     * @param username The user whose password is changing.
+     * @param newPassword The new password to store.
+     */   
+    public void updatePassword(String username, String newPassword);
+
+    /**
      * Retrieves the suburbs associated with a postcode.
      * @param postcode The postcode to search for.
      */
     public List<String> findSuburbsByPostcode(int postcode);
+
 
     /**
      * Adds a new user to the database.

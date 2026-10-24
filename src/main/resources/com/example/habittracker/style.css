@@ -199,3 +199,96 @@
     -fx-font-size: 15px;
     -fx-cursor: hand;
 }
+
+/*  Profile  */
+
+.field-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: -text-muted;
+}
+
+.profile-username {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.password-field {
+    -fx-background-color: white;
+    -fx-border-color: -border;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 10 12;
+}
+
+.password-field:focused {
+    -fx-border-color: -green;
+}
+
+.primary-button {
+    -fx-background-color: -green;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: #356a4d;
+}
+
+.logout-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #b5483a;
+    -fx-text-fill: #b5483a;
+    -fx-padding: 10 20;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+}
+
+.logout-button:hover {
+    -fx-background-color: #f8ebe8;
+}
+
+/*  Login  */
+
+.login-brand {
+    -fx-background-color: -green;
+}
+
+.login-brand-title {
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.login-brand-tagline {
+    -fx-font-size: 18px;
+    -fx-text-fill: -green-light;
+}
+
+.login-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+}
+
+.error-label {
+    -fx-text-fill: #b5483a;
+    -fx-font-size: 13px;
+}
+
+.hyperlink {
+    -fx-text-fill: -green;
+}
+
+/*  Achievements  */
+
+.badge-unlocked {
+    -fx-background-color: -green-light;
+    -fx-border-color: -green;
+}
+
+.badge-locked .card-title {
+    -fx-text-fill: -text-muted;
+}

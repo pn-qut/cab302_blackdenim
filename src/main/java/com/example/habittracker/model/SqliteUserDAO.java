@@ -127,4 +127,17 @@ public class SqliteUserDAO implements IUserDAO {
             throw new IllegalStateException("Unable to save user.", e);
         }
     }
+
+    @Override
+    public void updatePassword(String username, String newPassword) {
+    try (PreparedStatement statement = connection.prepareStatement(
+            "UPDATE users SET password = ? WHERE username = ?"
+    )) {
+        statement.setString(1, newPassword);
+        statement.setString(2, username);
+        statement.executeUpdate();
+    } catch (SQLException e) {
+        throw new IllegalStateException("Unable to update password.", e);
+    }
+}
 }
