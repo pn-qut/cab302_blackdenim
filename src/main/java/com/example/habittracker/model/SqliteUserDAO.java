@@ -92,7 +92,7 @@ public class SqliteUserDAO implements IUserDAO {
     @Override
     public List<String> findSuburbsByPostcode(int postcode) {
         List<String> suburbs = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(
+        try (PreparedStatement statement = SqlitePostcodeConnection.getInstance().prepareStatement(
                 "SELECT suburb FROM suburbs WHERE postcode = ? ORDER BY suburb COLLATE NOCASE"
         )) {
             statement.setInt(1, postcode);
