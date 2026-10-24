@@ -1,13 +1,6 @@
 package com.example.habittracker.controller;
 
-import com.example.habittracker.model.DAOFactory;
-import com.example.habittracker.model.Habit;
-import com.example.habittracker.model.HabitObserver;
-import com.example.habittracker.model.HabitProgress;
-import com.example.habittracker.model.HabitService;
-import com.example.habittracker.model.LastDoneText;
-import com.example.habittracker.model.TimeOfDay;
-import com.example.habittracker.model.User;
+import com.example.habittracker.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -43,24 +36,36 @@ public class TodayHabitController implements HabitObserver {
     @FXML
     private VBox weeklyProgressBox;
 
+    @FXML
+    private ListView<Habit> communityGoal;
+
     private Runnable onAddHabitAction;
 
     private final HabitService habitService = DAOFactory.createHabitService();
+
+    private final IHabitDAO habitDAO = DAOFactory.getHabitDAO();
+
+    private final ICommunityHabitDAO communityHabitDAO = DAOFactory.getCommunityHabitEntryDAO();
 
     private int loggedInUserId;
 
     private final ObservableList<Habit> todayHabits = FXCollections.observableArrayList();
 
+    private final ObservableList<Habit> communityHabitList = FXCollections.observableArrayList();
+
     @FXML
     public void initialize() {
         todayHabitsList.setItems(todayHabits);
+        communityGoal.setItems(communityHabitList);
         todayHabitsList.setCellFactory(list -> new HabitCell(habitService, () -> loggedInUserId, this::lastDoneText));
+        communityGoal.setCellFactory(list -> new HabitCell(habitService, () -> loggedInUserId, this::lastDoneText));
         habitService.attachObserver(this);
     }
 
     @Override
     public void onHabitsChanged() {
         todayHabitsList.refresh();
+        communityGoal.refresh();
         updateWeeklyProgress();
         updateScore();
     }
@@ -73,6 +78,18 @@ public class TodayHabitController implements HabitObserver {
     public void setUser(User user) {
         loggedInUserId = user.getId();
         todayHabits.setAll(habitService.getUserHabits(loggedInUserId));
+        Integer communityHabitID = communityHabitDAO.getCommunityHabitID(user.getPostcode());
+        if(communityHabitID != null)
+        {
+            if(communityHabitList.isEmpty())
+            {
+                communityHabitList.add(habitDAO.findHabitById(communityHabitID));
+            }
+            else{
+                communityHabitList.set(0,habitDAO.findHabitById(communityHabitID));
+            }
+
+        }
         updateHeader(user);
         updateWeeklyProgress();
         updateScore();

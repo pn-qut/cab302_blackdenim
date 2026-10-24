@@ -18,6 +18,7 @@ public class MainShellController {
     private static final String HABITS_VIEW = "habits.fxml";
     private static final String PROFILE_VIEW = "profile.fxml";
     private static final String LEADERBOARD_VIEW = "leaderboard.fxml";
+    private static final String COMMUNITYGOALS_VIEW = "communitygoals.fxml";
     private static final String ACTIVE_STYLE = "active";
 
 
@@ -75,7 +76,7 @@ public class MainShellController {
 
     @FXML
     private void onCommunityGoalsClicked() {
-        showComingSoon(communityGoalsButton, "Community goal page");
+        navigate(communityGoalsButton, COMMUNITYGOALS_VIEW);
     }
 
     @FXML
@@ -131,6 +132,9 @@ public class MainShellController {
                 ProfileController profileController = (ProfileController) controller;
                 profileController.setUser(user);
                 profileController.setOnLogout(onLogout);
+            } else if (controller instanceof CommunityGoalsController) {
+                CommunityGoalsController profileController = (CommunityGoalsController) controller;
+                profileController.setUser(user);
             }
 
             contentArea.getChildren().setAll(page);
