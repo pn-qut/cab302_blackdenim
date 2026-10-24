@@ -8,10 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SqliteHabitDAO implements IHabitDAO{
-    private Connection connection;
+    private final Connection connection;
 
-    public SqliteHabitDAO(){
-        connection = SqliteConnection.getInstance();
+    public SqliteHabitDAO() {
+        this(SqliteConnection.getInstance());
+    }
+
+    public SqliteHabitDAO(Connection connection) {
+        this.connection = connection;
         createTable();
         addDefaultHabits();
     }
