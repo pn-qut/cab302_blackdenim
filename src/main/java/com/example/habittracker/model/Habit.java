@@ -37,7 +37,7 @@ public class Habit {
      * Sets the name of the habit.
      * @param name The name to set.
      */
-    public void setId(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 }
