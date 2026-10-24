@@ -170,6 +170,23 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
 
 
     @Override
+    public int getUserTotalScore(int userId) {
+        String query = "SELECT COUNT(*) FROM habit_entries WHERE user_id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    @Override
     public Map<Integer, Integer> countCompletionsByHabit(int userId, LocalDate from, LocalDate to) {
         Map<Integer, Integer> counts = new HashMap<>();
 

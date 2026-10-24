@@ -70,6 +70,16 @@ public class MockHabitEntryDAO implements IHabitEntryDAO {
         return 42;
     }
 
+    /**
+     * Counts every habit a user has completed, on any date.
+     */
+    @Override
+    public int getUserTotalScore(int userId) {
+        return (int) entries.stream()
+                .filter(entry -> entry.userId == userId)
+                .count();
+    }
+
     @Override
     public List<LeaderboardEntry> getMonthlyLeaderboard(int month, int year) {
         return List.of();

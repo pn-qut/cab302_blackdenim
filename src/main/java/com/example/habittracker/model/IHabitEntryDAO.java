@@ -24,6 +24,9 @@ public interface IHabitEntryDAO {
     // Get a users total score for a given month, where one point is given for each completed habit
     int getUserMonthlyScore(int userId, int month, int year);
 
+    // Get a user's all-time score, where one point is given for each completed habit
+    int getUserTotalScore(int userId);
+
     // Get a list of leaderboard entries for a given month, ranked from highest to lowest score
     List<LeaderboardEntry> getMonthlyLeaderboard(int month, int year);
 

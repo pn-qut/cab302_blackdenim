@@ -137,6 +137,13 @@ public class HabitService {
     }
 
     /**
+     * Gets the user's all-time score, with one point for every habit they have completed.
+     */
+    public int getUserTotalScore(int userId) {
+        return entryDAO.getUserTotalScore(userId);
+    }
+
+    /**
      * Gets the Monday of the week that a date falls in.
      */
     private static LocalDate startOfWeek(LocalDate date) {
