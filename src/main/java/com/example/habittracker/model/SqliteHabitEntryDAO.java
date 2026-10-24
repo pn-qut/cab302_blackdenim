@@ -120,33 +120,6 @@ public class SqliteHabitEntryDAO implements IHabitEntryDAO {
     }
 
     @Override
-    public List<LocalDate> getCompletionDates(int userId, int habitId){
-        List<LocalDate> dates = new ArrayList<>();
-
-        try{
-            String query = "SELECT completion_date "
-                    + "FROM habit_entries "
-                    + "WHERE user_id = ? "
-                    + "AND habit_id = ?"
-                    + "ORDER BY completion_date DESC";
-
-            PreparedStatement statement = connection.prepareStatement(query);
-
-            statement.setInt(1, userId);
-            statement.setInt(2, habitId);
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                LocalDate completionDate = LocalDate.parse(resultSet.getString("completion_date"));
-                dates.add(completionDate);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return dates;
-    }
-
-    @Override
     public List<LocalDate> getActiveDates(int userId) {
         List<LocalDate> dates = new ArrayList<>();
 

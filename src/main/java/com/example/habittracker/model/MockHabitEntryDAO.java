@@ -52,11 +52,6 @@ public class MockHabitEntryDAO implements IHabitEntryDAO {
         return habitIds;
     }
 
-    @Override
-    public List<LocalDate> getCompletionDates(int userId, int habitId) {
-        return List.of();
-    }
-
     /**
      * Gets every date a user completed at least one habit, most recent first.
      */
