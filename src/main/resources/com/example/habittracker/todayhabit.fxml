@@ -47,16 +47,6 @@
               prefWidth="320"
               minWidth="280">
 
-            <VBox spacing="12"
-                  VBox.vgrow="ALWAYS"
-                  styleClass="card">
-                <Label text="This week's progress"
-                       styleClass="card-title"/>
-
-                <VBox fx:id="weeklyProgressBox"
-                      spacing="10"/>
-            </VBox>
-
             <HBox styleClass="card">
                 <VBox styleClass="stat"
                       HBox.hgrow="ALWAYS">
@@ -75,7 +65,26 @@
                     <Label text="score this month"
                            styleClass="stat-caption"/>
                 </VBox>
+
+                <VBox styleClass="stat"
+                      HBox.hgrow="ALWAYS">
+                    <Label fx:id="totalScoreLabel"
+                           text="0"
+                           styleClass="stat-value"/>
+                    <Label text="total score"
+                           styleClass="stat-caption"/>
+                </VBox>
             </HBox>
+
+            <VBox spacing="12"
+                  VBox.vgrow="ALWAYS"
+                  styleClass="card">
+                <Label text="This week's progress"
+                       styleClass="card-title"/>
+
+                <VBox fx:id="weeklyProgressBox"
+                      spacing="10"/>
+            </VBox>
         </VBox>
 
     </HBox>
