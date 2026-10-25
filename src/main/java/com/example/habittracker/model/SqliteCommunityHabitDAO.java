@@ -50,7 +50,11 @@ public class SqliteCommunityHabitDAO implements ICommunityHabitDAO{
 
     public int getTotalCommunityCompletions(int postcode, LocalDate date){
         int totalCompletions = 0;
-        int habitID = getCommunityHabitID(postcode);
+        Integer habitID = getCommunityHabitID(postcode);
+
+        if (habitID==null){
+            return 0;
+        }
 
         try{
             String query = "SELECT COUNT (*) "
