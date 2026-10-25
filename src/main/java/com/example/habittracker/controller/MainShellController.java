@@ -10,7 +10,9 @@ import javafx.scene.control.Label;
 
 import java.io.IOException;
 import java.util.List;
-
+/**
+ * Controller for the Main Menu sidebar
+ */
 public class MainShellController {
 
     private static final String VIEW_FOLDER = "/com/example/habittracker/";

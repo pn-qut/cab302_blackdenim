@@ -14,7 +14,9 @@ import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
-
+/**
+ * Controller for the Leaderboard page
+ */
 public class LeaderboardController {
     @FXML
     private ListView<LeaderboardEntry> leaderboardList;

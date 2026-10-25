@@ -11,6 +11,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Controller for the Log In page
+ */
 public class LoginController {
 
     private IUserDAO userDAO;
