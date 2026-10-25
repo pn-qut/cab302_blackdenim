@@ -9,6 +9,7 @@ public class SqliteCommunityHabitDAO implements ICommunityHabitDAO{
     public SqliteCommunityHabitDAO(){
         connection = SqliteConnection.getInstance();
         createTable();
+        addDefaultValues();
     }
 
     private void createTable() {
@@ -26,6 +27,23 @@ public class SqliteCommunityHabitDAO implements ICommunityHabitDAO{
         }
     }
 
+    /**
+     * To be removed and replaced with actual "Admin setting" functionality in a formal release.
+     * For this prototype, just sets all postcodes with a "Default" habit if none exists.
+     */
+    private void addDefaultValues() {
+        // Create table if not exists
+        try {
+            for(int i=4000; i<5000; i++){
+                String query = "INSERT OR IGNORE INTO community_habits(postcode, habit_id) VALUES (?, 17)";
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setInt(1, i);
+                statement.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public Integer getCommunityHabitID(int postcode){
         Integer habitID = null;
 
@@ -50,7 +68,11 @@ public class SqliteCommunityHabitDAO implements ICommunityHabitDAO{
 
     public int getTotalCommunityCompletions(int postcode, LocalDate date){
         int totalCompletions = 0;
-        int habitID = getCommunityHabitID(postcode);
+        Integer habitID = getCommunityHabitID(postcode);
+
+        if (habitID==null){
+            return 0;
+        }
 
         try{
             String query = "SELECT COUNT (*) "

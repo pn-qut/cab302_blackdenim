@@ -31,8 +31,13 @@ public class CommunityGoalsController {
 
     public void setUser(User user) {
         postcode = user.getPostcode();
-        int communityHabitID = communityHabitDAO.getCommunityHabitID(postcode);
-        communityHabit = habitDAO.findHabitById(communityHabitID);
+        Integer communityHabitID = communityHabitDAO.getCommunityHabitID(postcode);
+        if (communityHabitID != null) {
+            communityHabit = habitDAO.findHabitById(communityHabitID);
+        }
+        else {
+            communityHabit = null;
+        }
         updatePageHeader();
         getDataForGraph();
         System.out.println(communityGoalsSeries);
@@ -46,7 +51,12 @@ public class CommunityGoalsController {
     private void updatePageHeader() {
         String userPostcode = postcode.toString();
         communityGoalsTitle.setText("Community Goal Summary for Post Code "+userPostcode);
-        communityGoalsHabitLabel.setText("The Community Goal for this month is: " + communityHabit.getName() + "!");
+        if(communityHabit != null) {
+            communityGoalsHabitLabel.setText("The Community Goal for this month is: " + communityHabit.getName() + "!");
+        }
+        else{
+            communityGoalsHabitLabel.setText("No Community Habit set for this month!");
+        }
     }
 
     public void getDataForGraph(){
