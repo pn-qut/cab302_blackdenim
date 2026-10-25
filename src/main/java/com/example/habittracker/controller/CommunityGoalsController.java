@@ -11,6 +11,9 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 
+/**
+ * Controller for the Community Goals page
+ */
 public class CommunityGoalsController {
 
     @FXML

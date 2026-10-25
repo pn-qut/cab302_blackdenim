@@ -17,6 +17,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Controller for the main user homepage, with personal stats shown
+ */
 public class TodayHabitController implements HabitObserver {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("EEEE d MMMM");
     private static final double PROGRESS_NAME_WIDTH = 90;

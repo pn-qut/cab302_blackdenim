@@ -6,7 +6,9 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-
+/**
+ * Controller for the animated mascot - "Scott"
+ */
 public class ScottController {
 
     @FXML

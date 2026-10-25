@@ -11,6 +11,9 @@ import javafx.scene.layout.VBox;
 
 import java.util.List;
 
+/**
+ * Controller for the Achievements page
+ */
 public class AchievementsController {
 
     @FXML

@@ -15,6 +15,9 @@ import javafx.scene.layout.StackPane;
 
 import java.util.List;
 
+/**
+ * Controller for the Habit List page
+ */
 public class HabitsController {
 
     private final IHabitDAO habitDAO = DAOFactory.getHabitDAO();

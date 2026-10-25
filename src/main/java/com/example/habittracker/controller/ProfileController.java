@@ -11,7 +11,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 
 import java.util.Optional;
-
+/**
+ * Controller for the User Profile page
+ */
 public class ProfileController {
 
     @FXML private Label usernameLabel;

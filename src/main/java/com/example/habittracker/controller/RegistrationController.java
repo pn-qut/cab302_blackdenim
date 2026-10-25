@@ -12,7 +12,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-
+/**
+ * Controller for the User Registration page
+ */
 public class RegistrationController {
 
     private IUserDAO userDAO;
