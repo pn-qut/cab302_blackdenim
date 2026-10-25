@@ -9,7 +9,6 @@ public class SqliteCommunityHabitDAO implements ICommunityHabitDAO{
     public SqliteCommunityHabitDAO(){
         connection = SqliteConnection.getInstance();
         createTable();
-        addDefaultCommunityHabits();
     }
 
     private void createTable() {
@@ -22,20 +21,6 @@ public class SqliteCommunityHabitDAO implements ICommunityHabitDAO{
                     + "PRIMARY KEY(postcode), "
                     + "CONSTRAINT habit_id FOREIGN KEY(habit_id) REFERENCES habits(habit_id))";
             statement.execute(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void addDefaultCommunityHabits(){
-        try {
-            PreparedStatement statement = connection.prepareStatement(
-                    "INSERT OR IGNORE INTO community_habits (postcode, habit_id) VALUES (?, ?)"
-            );
-
-            statement.setInt(1, 0);
-            statement.setInt(2, 17);
-            statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
